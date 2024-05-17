@@ -1,14 +1,12 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, Request
 
 app = FastAPI()
 
-class Item(BaseModel):
-    token: str
-    time: str
-
 @app.post("/submit-data")
-async def submit_data(item: Item):
-    # Process the data as needed, e.g., log it, store it, etc.
-    # This example simply echoes the received data back in the response
-    return {"Received Token": item.token, "Received Time": item.time}
+async def submit_data(request: Request):
+    data = await request.json()  # Access the JSON directly
+    token = data.get('token')
+    time = data.get('time')
+    if not token or not time:
+        raise HTTPException(status_code=400, detail="Missing token or time")
+    return {"Received Token": token, "Received Time": time}
