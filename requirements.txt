@@ -1,11 +1,2 @@
-requests
-google-api-python-client
-pandas
-datetime
-sqlalchemy
-flask
-psycopg2
 fastapi
 uvicorn
-pydantic
-requests
