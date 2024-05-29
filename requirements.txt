@@ -1,3 +1,6 @@
 fastapi==0.78.0
 uvicorn==0.18.2
 pydantic<2
+typing
+json
+google-api-python-client
