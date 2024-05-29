@@ -6,6 +6,7 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import json
+import logging
 
 app = FastAPI()
 
@@ -43,13 +44,13 @@ def write_to_sheet(data: dict, credentials: Credentials):
 def print_json_structure(data, indent=0):    
     data = data.dict()
     for key, value in data.items():
-        print('  ' * indent + str(key))
+        app.logger.info('  ' * indent + str(key))
         if isinstance(value, dict):
             print_json_structure(value, indent + 1)
         elif isinstance(value, list):
-            print('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
+            app.logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
         else:
-            print('  ' * (indent + 1) + str(type(value)))
+            app.logger.info('  ' * (indent + 1) + str(type(value)))
 
 
 @app.post("/receive-token/{param:path}")
