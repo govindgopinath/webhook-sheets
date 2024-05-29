@@ -45,7 +45,7 @@ def write_to_sheet(data: dict, credentials: Credentials):
     ).execute()
 
 
-def print_json_structure(data: Dict[str, Any], indent: int = 0):
+def print_json_structure(data: Any, indent: int = 0):
     if isinstance(data, dict):
         for key, value in data.items():
             logger.info('  ' * indent + str(key))
