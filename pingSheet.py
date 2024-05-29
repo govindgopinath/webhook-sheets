@@ -8,6 +8,10 @@ from googleapiclient.discovery import build
 import json
 import logging
 
+# Create and configure logger
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)  # Creating a logger object
+
 app = FastAPI()
 
 class TokenData(BaseModel):
@@ -44,13 +48,13 @@ def write_to_sheet(data: dict, credentials: Credentials):
 def print_json_structure(data, indent=0):    
     data = data.dict()
     for key, value in data.items():
-        app.logger.info('  ' * indent + str(key))
+        logger.info('  ' * indent + str(key))
         if isinstance(value, dict):
             print_json_structure(value, indent + 1)
         elif isinstance(value, list):
-            app.logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
+            logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
         else:
-            app.logger.info('  ' * (indent + 1) + str(type(value)))
+            logger.info('  ' * (indent + 1) + str(type(value)))
 
 
 @app.post("/receive-token/{param:path}")
