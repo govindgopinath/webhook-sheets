@@ -74,6 +74,7 @@ async def receive_token(param: str, data: TokenData):
     }
     # Load the credentials
     #creds = Credentials(token=data.token)
+    logger.info(data.data)
     print_json_structure(data.data)
     # Write the row data to the sheet
     #try:
