@@ -41,6 +41,7 @@ def write_to_sheet(data: dict, credentials: Credentials):
 
 
 def print_json_structure(data, indent=0):    
+    data = data.dict()
     for key, value in data.items():
         print('  ' * indent + str(key))
         if isinstance(value, dict):
