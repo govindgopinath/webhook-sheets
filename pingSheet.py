@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
@@ -9,13 +9,13 @@ import json
 import logging
 
 # Create and configure logger
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)  # Creating a logger object
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
 class TokenData(BaseModel):
-    data: Any
+    data: Dict
 
 # Function to write data to Google Sheet using Google Sheets API.
 def write_to_sheet(data: dict, credentials: Credentials):
@@ -45,16 +45,18 @@ def write_to_sheet(data: dict, credentials: Credentials):
     ).execute()
 
 
-def print_json_structure(data, indent=0):    
-    data = data.dict()
-    for key, value in data.items():
-        logger.info('  ' * indent + str(key))
-        if isinstance(value, dict):
-            print_json_structure(value, indent + 1)
-        elif isinstance(value, list):
-            logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
-        else:
-            logger.info('  ' * (indent + 1) + str(type(value)))
+def print_json_structure(data: Dict[str, Any], indent: int = 0):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            logger.info('  ' * indent + str(key))
+            if isinstance(value, dict):
+                print_json_structure(value, indent + 1)
+            elif isinstance(value, list):
+                logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
+            else:
+                logger.info('  ' * (indent + 1) + str(type(value)))
+    else:
+        logger.error("Provided data is not a dictionary")
 
 
 @app.post("/receive-token/{param:path}")
