@@ -79,13 +79,13 @@ async def receive_token(param: str, data: TokenData):
     }
     # Load the credentials
     #creds = Credentials(token=data.token)
-    print_json_structure(data)
+    
     # Write the row data to the sheet
     #try:
     #    write_to_sheet(row_data, creds)
     #except Exception as e:
     #    raise HTTPException(status_code=500, detail=str(e))
-    return row_data
+    return print_json_structure(data)
 
 if __name__ == "__main__":
     import uvicorn
