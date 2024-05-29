@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 class TokenData(BaseModel):
-    Any
+    data: Any
 
 # Function to write data to Google Sheet using Google Sheets API.
 def write_to_sheet(data: dict, credentials: Credentials):
@@ -74,7 +74,7 @@ async def receive_token(param: str, data: TokenData):
     }
     # Load the credentials
     #creds = Credentials(token=data.token)
-    print_json_structure(data)
+    print_json_structure(data.data)
     # Write the row data to the sheet
     #try:
     #    write_to_sheet(row_data, creds)
