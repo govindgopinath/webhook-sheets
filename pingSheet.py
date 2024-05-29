@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List, Union
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
@@ -45,19 +45,24 @@ def write_to_sheet(data: dict, credentials: Credentials):
     ).execute()
 
 
-def print_json_structure(data: Any, indent: int = 0):
-    if isinstance(data, dict):
+def print_json_structure(data, indent=0, output=None):
+    if output is None:
+        output = []
+    prefix = '  ' * indent
+    if isinstance(data, dict):  # JSON objects
         for key, value in data.items():
-            logger.info('  ' * indent + str(key))
-            if isinstance(value, dict):
-                print_json_structure(value, indent + 1)
-            elif isinstance(value, list):
-                logger.info('  ' * (indent + 1) + "List of " + str(len(value)) + " items")
-            else:
-                logger.info('  ' * (indent + 1) + str(type(value)))
-    else:
-        logger.error("Provided data is not a dictionary")
-
+            output.append(f"{prefix}{key}:")
+            print_json_structure(value, indent + 1, output)
+    elif isinstance(data, list):  # JSON arrays
+        output.append(f"{prefix}Array of {len(data)} items:")
+        for index, item in enumerate(data):
+            output.append(f"{prefix}- Item {index + 1}:")
+            print_json_structure(item, indent + 1, output)
+    elif data is None:  # JSON null
+        output.append(f"{prefix}null")
+    else:  # Strings, numbers, and booleans
+        output.append(f"{prefix}{str(data)}")
+    return output
 
 @app.post("/receive-token/{param:path}")
 async def receive_token(param: str, data: TokenData):
@@ -74,7 +79,7 @@ async def receive_token(param: str, data: TokenData):
     }
     # Load the credentials
     #creds = Credentials(token=data.token)
-    print_json_structure(data.data)
+    print_json_structure(data)
     # Write the row data to the sheet
     #try:
     #    write_to_sheet(row_data, creds)
