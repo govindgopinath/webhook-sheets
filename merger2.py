@@ -346,10 +346,7 @@ def merge(keys,keys1):
 @app.post("/sendtoken")
 async def receive_token(data: TokenData):
     
-    insert_query = """INSERT INTO oauth_token ("token","sheetId","tabId","utcTime") VALUES (%s, %s, %s, %s) ON CONFLICT ("sheetId", "tabId") 
-    DO UPDATE SET 
-    "token" = EXCLUDED.token,
-    "utcTime" = EXCLUDED.utcTime;"""
+    insert_query = """INSERT INTO oauth_token (token,sheetId,tabId,utcTime) VALUES (%s, %s, %s, %s) ON CONFLICT (sheetId, tabId) DO UPDATE SET token = EXCLUDED.token, utcTime = EXCLUDED.utcTime;"""
     data_query = (data.token,data.sheetId,data.tabId,datetime.now())
     conn_sq = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
     cur_sq = conn_sq.cursor()
