@@ -400,6 +400,8 @@ def getdata(token,sheetId,tabId,rows):
             y2 = y2 + 1
         y1 = y1 + 1
     
+    print(values)
+    
     y1 = 0
     while y1<len(values):
         y2 = 0
