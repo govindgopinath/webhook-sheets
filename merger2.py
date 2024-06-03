@@ -367,7 +367,7 @@ async def receive_token(param: str, data: Dict):
         cur.execute(query, (row[0],))
         token = cur.fetchone()
         print(token)
-        getdata(token,row[0],row[1],row[2])
+        getdata(token[0],row[0],row[1],row[2])
         
     return 0
     
