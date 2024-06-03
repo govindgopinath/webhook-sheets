@@ -375,68 +375,27 @@ def value_merge(rows,pos):
         "updateCells": {
             "range": {
                 "sheetId": 0,
-                "startRowIndex": 0,
-                "endRowIndex": len(keys1),
+                "startRowIndex": pos,
+                "endRowIndex": pos+len(rows),
                 "startColumnIndex": 0,
-                "endColumnIndex": len(keys1[0])
+                "endColumnIndex": len(rows[0])
             },
             "rows": [{
                 "values": [
                 {"userEnteredValue": {"stringValue": cell}} for cell in row
-            ]} for row in keys1
+            ]} for row in rows
         ],
         "fields": "userEnteredValue"
         }
     })
-    y1 = 0
-    while y1<len(keys):
-        y2 = 0
-        count=1
-        while y2<len(keys[y1]):
-            if y2>0:
-                if keys[y1][y2]==keys[y1][y2-1] and keys[y1][y2]!='':
-                    count = count+1
-                else:
-                    if count>1:
-                        requests.append({
-                            'mergeCells': {
-                                'range': {
-                                    'sheetId': 0,
-                                    'startRowIndex': y1,
-                                    'endRowIndex': y1+1,
-                                    'startColumnIndex': y2-count,
-                                    'endColumnIndex': y2
-                                    },
-                                'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
-                                }
-                            })
-                    count = 1
-            y2 = y2 + 1
-
-        if count>1:
-            requests.append({
-                'mergeCells': {
-                    'range': {
-                        'sheetId': 0,
-                        'startRowIndex': y1,
-                        'endRowIndex': y1+1,
-                        'startColumnIndex': y2-count,
-                        'endColumnIndex': y2
-                        },
-                    'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
-                    }
-                })
-            
-        y1 = y1 + 1
-
 
     y1 = 0
-    while y1<len(keys[0]):
+    while y1<len(rows[0]):
         count = 1
         y2 = 0
-        while y2<len(keys):
+        while y2<len(rows):
             if y2>0:
-                if keys[y2][y1]=='':
+                if rows[y2][y1]=='':
                     count = count+1
                 else:
                     if count>1:
@@ -444,8 +403,8 @@ def value_merge(rows,pos):
                             'mergeCells': {
                                 'range': {
                                     'sheetId': 0,
-                                    'startRowIndex': y2-count,
-                                    'endRowIndex': y2,
+                                    'startRowIndex': pos+y2-count,
+                                    'endRowIndex': pos+y2,
                                     'startColumnIndex': y1,
                                     'endColumnIndex': y1+1
                                     },
@@ -460,8 +419,8 @@ def value_merge(rows,pos):
                 'mergeCells': {
                     'range': {
                         'sheetId': 0,
-                        'startRowIndex': y2-count,
-                        'endRowIndex': y2,
+                        'startRowIndex': pos+y2-count,
+                        'endRowIndex': pos+y2,
                         'startColumnIndex': y1,
                         'endColumnIndex': y1+1
                         },
@@ -484,7 +443,7 @@ async def receive_token(data: TokenData):
     
     return 0
 
-@app.post("/receive-token/{param:path}")
+@app.post("/datasink/{param:path}")
 async def receive_token(param: str, data: Dict):
     conn = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
     cur = conn.cursor()
@@ -497,10 +456,9 @@ async def receive_token(param: str, data: Dict):
         cur.execute(query, (row[0],))
         token = cur.fetchone()
         print(token)
-        getdata(token[0],row[0],row[1],row[2])
-        
-    return 0
+        header = getdata(token[0],row[0],row[1],row[2])
     
+    return 0
 
 def getdata(token,sheetId,tabId,rows):
     
@@ -518,8 +476,11 @@ def getdata(token,sheetId,tabId,rows):
             break
     
     range_name = f'{sheet_name}!1:{rows}' 
+    range_all = f'{sheet_name}!'
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
+    result_all = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_all).execute()
     values = result.get('values', [])
+    values_all = result_all.get('values', [])
 
     max_len = max(len(keys) for keys in values)
     formatted_keys = []
@@ -552,8 +513,7 @@ def getdata(token,sheetId,tabId,rows):
             y2 = y2 + 1
         y1 = y1 + 1
     
-    print(values)
-    return 0
+    return [values,len(values_all)]
 
 # Collect keys recursively
 #keys_dict = collect_keys(data)
