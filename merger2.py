@@ -383,7 +383,7 @@ def getdata(token,sheetId,tabId,rows):
     sheets = sheet_metadata.get('sheets', '')
     sheet_name = None
     for sheet in sheets:
-        if sheet['properties']['sheetId'] == tabId:
+        if sheet['properties']['sheetId'] == int(tabId):
             sheet_name = sheet['properties']['title']
             break
     
