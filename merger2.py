@@ -360,6 +360,8 @@ async def receive_token(param: str, data: Dict):
     cur = conn.cursor()
     query = """SELECT "sheetId", "tabId", "rows" FROM header_structure where "param"='"""+param+"""'"""
     y = cur.execute(query)
+    print(y)
+    return 0
     
 
 def getdata():
