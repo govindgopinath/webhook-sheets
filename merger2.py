@@ -102,7 +102,6 @@ data = {
   }
 }
 
-
 access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
 spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
 creds = Credentials(token=access_token)
@@ -346,7 +345,7 @@ def merge(keys,keys1):
 @app.post("/sendtoken")
 async def receive_token(data: TokenData):
     
-    insert_query = """INSERT INTO oauth_token ("token","sheetId","tabId","utcTime") VALUES (%s, %s, %s, %s) ON CONFLICT ("sheetId", "tabId")  DO UPDATE SET "token" = EXCLUDED."token", "utcTime" = EXCLUDED."utcTime";"""
+    insert_query = """INSERT INTO oauth_token ("token","sheetId","utcTime") VALUES (%s, %s, %s, %s) ON CONFLICT ("sheetId")  DO UPDATE SET "token" = EXCLUDED."token", "utcTime" = EXCLUDED."utcTime";"""
     data_query = (data.token,data.sheetId,data.tabId,datetime.now())
     conn_sq = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
     cur_sq = conn_sq.cursor()
@@ -355,6 +354,28 @@ async def receive_token(data: TokenData):
     
     return 0
 
+@app.post("/receive-token/{param:path}")
+async def receive_token(param: str, data: Dict):
+    conn = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
+    cur = conn.cursor()
+    query = """SELECT "sheetId", "tabId", "token" FROM oauth_token where "param"='"""+param+"""'"""
+    y = cur.execute(query)
+    
+
+def getdata():
+    
+    access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
+    spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
+    creds = Credentials(token=access_token)
+    service = build('sheets', 'v4', credentials=creds)
+
+    sheet_metadata = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+    sheets = sheet_metadata.get('sheets', '')
+    sheet_name = None
+    for sheet in sheets:
+        if sheet['properties']['sheetId'] == :
+            sheet_name = sheet['properties']['title']
+            break
 
 
 # Collect keys recursively
