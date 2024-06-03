@@ -391,17 +391,16 @@ def getdata(token,sheetId,tabId,rows):
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
     values = result.get('values', [])
 
-    max_len = max(len(keys) for keys in values.values())
+    max_len = max(len(keys) for keys in values)
     formatted_keys = []
 
-    for level in range(len(values)):
-        keys = values.get(level, [])
+    for keys in values:
         while len(keys) < max_len:
             keys.append('')
         formatted_keys.append(keys)
     
     values = formatted_keys
-    
+
     y1 = 0
     while y1<len(values):
         y2 = 0
