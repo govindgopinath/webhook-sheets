@@ -358,7 +358,7 @@ async def receive_token(data: TokenData):
 async def receive_token(param: str, data: Dict):
     conn = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
     cur = conn.cursor()
-    query = """SELECT "sheetId", "tabId", "token" FROM oauth_token where "param"='"""+param+"""'"""
+    query = """SELECT "sheetId", "tabId", "rows" FROM header_structure where "param"='"""+param+"""'"""
     y = cur.execute(query)
     
 
@@ -373,7 +373,7 @@ def getdata():
     sheets = sheet_metadata.get('sheets', '')
     sheet_name = None
     for sheet in sheets:
-        if sheet['properties']['sheetId'] == :
+        if sheet['properties']['sheetId'] == sheet_name:
             sheet_name = sheet['properties']['title']
             break
 
