@@ -390,7 +390,17 @@ def getdata(token,sheetId,tabId,rows):
     range_name = f'{sheet_name}!1:{rows}' 
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
     values = result.get('values', [])
-    
+
+    y1 = 0
+    while y1<len(values):
+        y2 = 0
+        while y2<len(values[y1]):
+            if values[y1][y2]=='':
+                values[y1][y2] = values[y1][y2-1]
+            if y1>0:
+                values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1-1][y2]               
+            y2 = y2 + 1
+        y1 = y1 + 1
     print(values)
     return 0
 
