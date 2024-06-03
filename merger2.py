@@ -358,16 +358,24 @@ async def receive_token(data: TokenData):
 async def receive_token(param: str, data: Dict):
     conn = psycopg2.connect("postgresql://retool:yosc9BrPx5Lw@ep-silent-hill-00541089.us-west-2.retooldb.com/retool?sslmode=require")
     cur = conn.cursor()
-    query = """SELECT "sheetId", "tabId", "rows" FROM header_structure where "param"='"""+param+"""'"""
-    y = cur.execute(query)
-    print(y)
+    query = """SELECT "sheetId", "tabId", "rows" FROM header_structure WHERE "param" = %s;"""
+    cur.execute(query, (param,))
+    row = cur.fetchone()
+    
+    if row:
+        query = """SELECT "token" FROM oauth_token WHERE "sheetId" = %s;"""
+        cur.execute(query, (row[0],))
+        token = cur.fetchone()
+        print(token)
+        getdata(token,row[0],row[1],row[2])
+        
     return 0
     
 
-def getdata():
+def getdata(token,sheetId,tabId,rows):
     
-    access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
-    spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
+    access_token = token
+    spreadsheet_id = sheetId
     creds = Credentials(token=access_token)
     service = build('sheets', 'v4', credentials=creds)
 
@@ -375,10 +383,16 @@ def getdata():
     sheets = sheet_metadata.get('sheets', '')
     sheet_name = None
     for sheet in sheets:
-        if sheet['properties']['sheetId'] == sheet_name:
+        if sheet['properties']['sheetId'] == tabId:
             sheet_name = sheet['properties']['title']
             break
-
+    
+    range_name = f'{sheet_name}!1:{rows}' 
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
+    values = result.get('values', [])
+    
+    print(values)
+    return 0
 
 # Collect keys recursively
 keys_dict = collect_keys(data)
