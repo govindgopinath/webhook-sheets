@@ -413,18 +413,18 @@ def getdata(token,sheetId,tabId,rows):
     return 0
 
 # Collect keys recursively
-keys_dict = collect_keys(data)
-print(keys_dict)
+#keys_dict = collect_keys(data)
+#print(keys_dict)
 
 # Format keys into the desired structure
-result = format_keys(keys_dict)
+#result = format_keys(keys_dict)
 
-print(getback(result))
-requests = merge(format_keys(keys_dict),getback(result))
+#print(getback(result))
+#requests = merge(format_keys(keys_dict),getback(result))
 
-body = {
-    'requests': requests
-}
+#body = {
+#    'requests': requests
+#}
 
 #service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id,body=body).execute()
 #print(result)
