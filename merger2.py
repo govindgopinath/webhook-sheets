@@ -133,7 +133,11 @@ clear_values_request = {
 #service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=clear_values_request).execute()
 #service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=clear_formatting_request).execute()
 
-def collect_keys(data, level=0, keys_dict=None, z=0, prevkey=""):
+def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
+
+    if colchanges is None:
+        colchanges = []
+    
     if keys_dict is None:
         keys_dict = {}
 
@@ -148,14 +152,13 @@ def collect_keys(data, level=0, keys_dict=None, z=0, prevkey=""):
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
             if level>0:    
-                rev_index = keys_dict[level-1][::-1].index(prevkey)
-                y = len(keys_dict[level-1])-rev_index-1
-                if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
-                    y = y + 1
-                print(rev_index,y)
-                print(keys_dict)
                 if key not in keys_dict[level]:
+                    rev_index = keys_dict[level-1][::-1].index(prevkey)
+                    y = len(keys_dict[level-1])-rev_index-1
+                    if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
+                        y = y + 1 
                     keys_dict[level].insert(y,key)
+                    colchanges.append(y)
                     if len(keys_dict[level])>y:
                         level2=level
                         oldkey = key
@@ -179,24 +182,48 @@ def collect_keys(data, level=0, keys_dict=None, z=0, prevkey=""):
                             level2 = level2+1
                 
                 if isinstance(value,dict):
-                    collect_keys(value,level+1,keys_dict,-1,key)
+                    collect_keys(value,level+1,keys_dict,key,colchanges)
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        collect_keys(value[j],level+1,keys_dict,-1,key)
+                        collect_keys(value[j],level+1,keys_dict,key,colchanges)
 
             else: 
                 if key not in keys_dict[level]:
                     keys_dict[level].append(key)
 
                 if isinstance(value,dict):
-                    collect_keys(value,level+1,keys_dict,-1,key)
+                    collect_keys(value,level+1,keys_dict,key,colchanges)
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        collect_keys(value[j],level+1,keys_dict,-1,key)
+                        collect_keys(value[j],level+1,keys_dict,key,colchanges)
 
-    return keys_dict
+    return [keys_dict,colchanges]
+
+def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
+    
+    if row is None:
+        row = []
+
+    if rowlevel not in keys_dict:
+        row[rowlevel] = ['']*len(keys_dict[level-1])
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key in keys_dict[level]:
+                if isinstance(value,dict):
+                    fill_rows(value,level+1,keys_dict,row,rowlevel)
+            
+                elif isinstance(value,list):
+                    for j in range(0,len(value)):
+                        fill_rows(value[j],level+1,keys_dict,key,row,rowlevel)
+                else:
+                    index = keys_dict[level].index(key)
+                    row[rowlevel][index] = value
+
+    return row
+
 
 def format_keys(keys_dict):
     
@@ -342,6 +369,109 @@ def merge(keys,keys1):
 
     return requests            
 
+def value_merge(rows,pos):
+    requests = []
+    requests.append({
+        "updateCells": {
+            "range": {
+                "sheetId": 0,
+                "startRowIndex": 0,
+                "endRowIndex": len(keys1),
+                "startColumnIndex": 0,
+                "endColumnIndex": len(keys1[0])
+            },
+            "rows": [{
+                "values": [
+                {"userEnteredValue": {"stringValue": cell}} for cell in row
+            ]} for row in keys1
+        ],
+        "fields": "userEnteredValue"
+        }
+    })
+    y1 = 0
+    while y1<len(keys):
+        y2 = 0
+        count=1
+        while y2<len(keys[y1]):
+            if y2>0:
+                if keys[y1][y2]==keys[y1][y2-1] and keys[y1][y2]!='':
+                    count = count+1
+                else:
+                    if count>1:
+                        requests.append({
+                            'mergeCells': {
+                                'range': {
+                                    'sheetId': 0,
+                                    'startRowIndex': y1,
+                                    'endRowIndex': y1+1,
+                                    'startColumnIndex': y2-count,
+                                    'endColumnIndex': y2
+                                    },
+                                'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
+                                }
+                            })
+                    count = 1
+            y2 = y2 + 1
+
+        if count>1:
+            requests.append({
+                'mergeCells': {
+                    'range': {
+                        'sheetId': 0,
+                        'startRowIndex': y1,
+                        'endRowIndex': y1+1,
+                        'startColumnIndex': y2-count,
+                        'endColumnIndex': y2
+                        },
+                    'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
+                    }
+                })
+            
+        y1 = y1 + 1
+
+
+    y1 = 0
+    while y1<len(keys[0]):
+        count = 1
+        y2 = 0
+        while y2<len(keys):
+            if y2>0:
+                if keys[y2][y1]=='':
+                    count = count+1
+                else:
+                    if count>1:
+                        requests.append({
+                            'mergeCells': {
+                                'range': {
+                                    'sheetId': 0,
+                                    'startRowIndex': y2-count,
+                                    'endRowIndex': y2,
+                                    'startColumnIndex': y1,
+                                    'endColumnIndex': y1+1
+                                    },
+                                'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
+                                }
+                            })
+                    count = 1
+            y2 = y2 + 1
+        
+        if count>1:
+            requests.append({
+                'mergeCells': {
+                    'range': {
+                        'sheetId': 0,
+                        'startRowIndex': y2-count,
+                        'endRowIndex': y2,
+                        'startColumnIndex': y1,
+                        'endColumnIndex': y1+1
+                        },
+                    'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
+                    }
+                })
+        y1 = y1 + 1
+
+    return requests   
+
 @app.post("/sendtoken")
 async def receive_token(data: TokenData):
     
@@ -416,7 +546,7 @@ def getdata(token,sheetId,tabId,rows):
     while y1<len(values):
         y2 = 0
         while y2<len(values[y1]):   
-            if y1>0:
+            if y1>0 and values[y1][y2]!='':
                 print(y1,y2)
                 values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1][y2]
             y2 = y2 + 1
