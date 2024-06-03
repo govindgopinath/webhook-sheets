@@ -394,13 +394,21 @@ def getdata(token,sheetId,tabId,rows):
     y1 = 0
     while y1<len(values):
         y2 = 0
-        while y2<len(values[y1]):
-            if values[y1][y2]=='':
+        while y2<len(values[y1]):   
+            if values[y1][y2]=='' and y2>0:
                 values[y1][y2] = values[y1][y2-1]
-            if y1>0:
-                values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1-1][y2]               
             y2 = y2 + 1
         y1 = y1 + 1
+    
+    y1 = 0
+    while y1<len(values):
+        y2 = 0
+        while y2<len(values[y1]):   
+            if y1>0:
+                values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1][y2]
+            y2 = y2 + 1
+        y1 = y1 + 1
+    
     print(values)
     return 0
 
