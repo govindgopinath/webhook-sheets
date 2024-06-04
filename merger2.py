@@ -495,6 +495,8 @@ async def receive_token(param: str, data: Dict):
             
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
+        
+        print(lastrow+len(cleaned)-int(row[2]))
         if (len(results[1])>0): 
             requests = []
             for j in range(len(results[1])):
@@ -504,8 +506,8 @@ async def receive_token(param: str, data: Dict):
                             "sheetId": row[1],
                             "startRowIndex": len(cleaned),
                             "endRowIndex": lastrow+len(cleaned)-int(row[2]),  
-                            "startColumnIndex": results[j],  
-                            "endColumnIndex": results[j]+1,
+                            "startColumnIndex": results[1][j],  
+                            "endColumnIndex": results[1][j]+1,
                         },
                         "shiftDimension": "COLUMNS" 
                     }})
