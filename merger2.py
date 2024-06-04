@@ -16,123 +16,6 @@ class TokenData(BaseModel):
     tabId: str
     email: str
 
-data = {
-  "mission": {
-    "name": "Journey to Mars",
-    "spaceship": {
-      "name": "Odyssey",
-      "crew": [
-        {
-          "name": "Commander John Smith",
-          "role": "Commander",
-          "bio": {
-            "age": 45,
-            "nationality": "American",
-            "experience": {
-              "years": 20,
-              "previous_missions": [
-                {
-                  "mission_name": "Moon Landing",
-                  "year": 2025,
-                  "details": {
-                    "mission_objective": "Explore lunar south pole",
-                    "outcome": {
-                      "successful": "true",
-                      "discoveries": [
-                        {
-                          "name": "Water ice",
-                          "location": {
-                            "latitude": -89.2,
-                            "longitude": 45.3,
-                            "depth": {
-                              "measure": "5 meters",
-                              "significance": {
-                                "study": {
-                                  "title": "Implications of Water Ice on Moon",
-                                  "published": "true",
-                                  "findings": "Potential for in-situ resource utilization"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "technology": {
-        "propulsion": "Ion Thruster",
-        "life_support": {
-          "systems": {
-            "oxygen_generation": {
-              "method": "Electrolysis",
-              "efficiency": "85%",
-              "backup_system": {
-                "type": "Chemical oxygen generator",
-                "capacity": {
-                  "duration": "48 hours",
-                  "mechanism": {
-                    "activation": "Manual",
-                    "control": {
-                      "location": "Control Room",
-                      "accessibility": {
-                        "crew_only": "true",
-                        "safety_protocol": {
-                          "steps": [
-                            "Verify necessity",
-                            "Two-person authorization",
-                            "Engage system"
-                          ]
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-#access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
-#spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
-#creds = Credentials(token=access_token)
-#service = build('sheets', 'v4', credentials=creds)
-
-clear_formatting_request ={
-    'requests': [
-        {
-            'unmergeCells': {
-                'range': {
-                    'sheetId': 0  # Assuming you want to unmerge cells in the first sheet
-                }
-            }
-        }
-    ]
-}
-clear_values_request = {
-    'requests': [
-        {
-            'updateCells': {
-                'range': {
-                    'sheetId': 0  # Assuming you want to clear the first sheet
-                },
-                'fields': 'userEnteredValue'
-            }
-        }
-    ]
-}
-#service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=clear_values_request).execute()
-#service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=clear_formatting_request).execute()
-
 def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
 
     if colchanges is None:
@@ -530,6 +413,27 @@ async def receive_token(param: str, data: Dict):
 
         #write the row
         requests.append(value_merge(datarow,lastrow+len(cleaned)-int(row[2])))
+
+        clear_formatting_request ={
+        'requests': [{
+            'unmergeCells': {
+                'range': {
+                    'sheetId': 0  # Assuming you want to unmerge cells in the first sheet
+                }}
+            }]}
+        
+        clear_values_request = {
+        'requests': [{
+            'updateCells': {
+                'range': {
+                    'sheetId': 0  # Assuming you want to clear the first sheet
+                    },
+                'fields': 'userEnteredValue'
+                }   
+            }]}
+        
+        service.spreadsheets().batchUpdate(spreadsheetId=row[0], body=clear_values_request).execute()
+        service.spreadsheets().batchUpdate(spreadsheetId=row[0], body=clear_formatting_request).execute()
 
         print(requests)
         body = {
