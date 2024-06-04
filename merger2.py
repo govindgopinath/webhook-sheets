@@ -474,6 +474,7 @@ async def receive_token(param: str, data: Dict):
         
         #new data cleaning
         datarow = fill_rows(data,0,results[0])
+        print("11")
         if len(cleaned) > int(row[2]):
             requests =  [
             {
@@ -495,7 +496,7 @@ async def receive_token(param: str, data: Dict):
             
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
-        
+
         print(lastrow+len(cleaned)-int(row[2]))
 
         if (len(results[1])>0): 
@@ -518,6 +519,7 @@ async def receive_token(param: str, data: Dict):
             }
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
         
+        print("12")
         #write the header
         requests = merge(cleaned,cleaned_2)
 
