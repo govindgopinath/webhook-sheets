@@ -115,7 +115,6 @@ def format_keys(keys_dict):
             keys.append('')
         formatted_keys.append(keys)
     
-
     keys = formatted_keys
 
     y1 = 0
@@ -354,7 +353,7 @@ async def receive_token(param: str, data: Dict):
         cleaned_2 = getback(cleaned)
         print(cleaned_2)
         #new data cleaning
-        datarow = fill_rows(data,0,results[0])
+        datarow = fill_rows(data,0,cleaned,[])
         print("11")
         if len(cleaned) > int(row[2]):
             requests =  [
