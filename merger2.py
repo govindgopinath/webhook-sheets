@@ -95,6 +95,7 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0,prevkey=""):
         for key, value in data.items():
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
+                print(key)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
