@@ -143,7 +143,6 @@ def format_keys(keys_dict):
             keys = [[row[i] for i in range(len(row)) if i != y1] for row in keys]
         else:
             y1 = y1 + 1
-
     return keys 
 
 def getback(keys):
@@ -365,11 +364,11 @@ async def receive_token(param: str, data: Dict):
         cleaned = format_keys(results[0])
         print(cleaned)
 
-        cleaned_2 = getback(cleaned)
-        
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
 
+        cleaned_2 = getback(cleaned)
+        
         if len(cleaned) > int(row[2]):
             requests =  [
             {
