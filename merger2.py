@@ -547,7 +547,7 @@ def getdata(token,sheetId,tabId,rows):
             sheet_name = sheet['properties']['title']
             break
     
-    if rows!=0:
+    if int(rows)!=0:
         range_name = f'{sheet_name}!1:{rows}' 
         range_all = f'{sheet_name}'
         result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
