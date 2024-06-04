@@ -22,12 +22,12 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
         if level>0:
             keys_dict.append(['']*len(keys_dict[level-1]))
     elif level>0:
-        if len(keys_dict[level])>len(keys_dict[level-1]):
+        if len(keys_dict[level])<len(keys_dict[level-1]):
             y = len(keys_dict[level])
             while y < keys_dict[level-1]:
                 keys_dict[level].append('')
                 y = y + 1
-                
+
     print(keys_dict)
     if isinstance(data, dict):
         for key, value in data.items():
