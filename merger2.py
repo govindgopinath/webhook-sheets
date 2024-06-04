@@ -558,15 +558,16 @@ def getdata(token,sheetId,tabId,rows):
     values = result.get('values', [])
     values_all = result_all.get('values', [])
 
-    max_len = max(len(keys) for keys in values)
-    formatted_keys = []
+    if values!=[]:
+        max_len = max(len(keys) for keys in values)
+        formatted_keys = []
 
-    for keys in values:
-        while len(keys) < max_len:
-            keys.append('')
-        formatted_keys.append(keys)
+        for keys in values:
+            while len(keys) < max_len:
+                keys.append('')
+            formatted_keys.append(keys)
     
-    values = formatted_keys
+        values = formatted_keys
 
     y1 = 0
     while y1<len(values):
