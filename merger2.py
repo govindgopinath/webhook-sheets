@@ -590,7 +590,8 @@ def getdata(token,sheetId,tabId,rows):
     else:
         values = []
         values_all = []
-        
+
+    print(values)    
     return [values,len(values_all)]
 
 if __name__ == "__main__":
