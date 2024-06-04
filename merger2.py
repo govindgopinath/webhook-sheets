@@ -16,13 +16,7 @@ class TokenData(BaseModel):
     tabId: str
     email: str
 
-def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
-
-    if colchanges is None:
-        colchanges = []
-    
-    if keys_dict is None:
-        keys_dict = []
+def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     if level>(len(keys_dict)-1):
         if level>0:
@@ -83,11 +77,8 @@ def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
+def fill_rows(data, level=0, keys_dict=None,row=[[]],rowlevel=0):
     
-    if row is None:
-        row = []
-
     if rowlevel>(len(keys_dict)-1):
         row.append(['']*len(keys_dict[level-1]))
 
