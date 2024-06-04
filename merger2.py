@@ -529,7 +529,7 @@ async def receive_token(param: str, data: Dict):
         }
         service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
-        if (len(results[0])>int(row)):
+        if (len(results[0])>int(row[2])):
             query = """UPDATE header_structure SET "rows" = %s WHERE "sheetId" = %s AND "tabId" = %s;"""
             cur.execute(query, (len(results[0]),row[0],row[1]))
             conn.commit()
