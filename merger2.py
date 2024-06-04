@@ -507,7 +507,7 @@ async def receive_token(param: str, data: Dict):
                         "range": {
                             "sheetId": row[1],
                             "startRowIndex": len(cleaned),
-                            "endRowIndex": lastrow+len(cleaned)-int(row[2])+1,  
+                            "endRowIndex": lastrow+len(cleaned)-int(row[2]),  
                             "startColumnIndex": results[1][j],  
                             "endColumnIndex": results[1][j]+1,
                         },
