@@ -99,6 +99,7 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0):
                     row[rowlevel][index] = value
     else:
         index = keys_dict[level].index(key)
+        print(row)
         row[rowlevel][index] = value
 
     return row
