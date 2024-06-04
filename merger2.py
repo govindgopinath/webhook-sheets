@@ -227,14 +227,14 @@ def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
 
 def format_keys(keys_dict):
     
-    max_len = max(len(keys) for keys in keys_dict.values())
+    max_len = max(len(keys) for keys in keys_dict)
     formatted_keys = []
 
-    for level in range(len(keys_dict)):
-        keys = keys_dict.get(level, [])
+    for keys in keys_dict:
         while len(keys) < max_len:
             keys.append('')
         formatted_keys.append(keys)
+    
 
     keys = formatted_keys
 
