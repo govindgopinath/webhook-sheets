@@ -474,7 +474,7 @@ async def receive_token(param: str, data: Dict):
         
         #new data cleaning
         datarow = fill_rows(data,0,results[0])
-        if len(cleaned > int(row[2])):
+        if len(cleaned) > int(row[2]):
             requests =  [
             {
                 "insertDimension": {
