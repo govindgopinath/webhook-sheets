@@ -552,7 +552,7 @@ def getdata(token,sheetId,tabId,rows):
             break
     
     range_name = f'{sheet_name}!1:{rows}' 
-    range_all = f'{sheet_name}!'
+    range_all = f'{sheet_name}'
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
     result_all = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_all).execute()
     values = result.get('values', [])
