@@ -83,7 +83,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0):
+def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0,prevkey=""):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -93,13 +93,15 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0):
 
     if isinstance(data, dict):
         for key, value in data.items():
+            if prevkey!= "":
+                key = prevkey+"char$tGPT"+key
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        fill_rows(value[j],level+1,keys_dict,key,row,rowlevel)
+                        fill_rows(value[j],level+1,keys_dict,key,row,rowlevel,key)
                 else:
                     index = keys_dict[level].index(key)
                     row[rowlevel][index] = value
@@ -356,6 +358,7 @@ async def receive_token(param: str, data: Dict):
         results = collect_keys(data,0,header)
         cleaned = format_keys(results[0])
         cleaned_2 = getback(cleaned)
+        print(cleaned)
         print(cleaned_2)
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
