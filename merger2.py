@@ -494,6 +494,7 @@ async def receive_token(param: str, data: Dict):
                 'requests': requests
             }
             
+            #print(body)
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
 
@@ -507,7 +508,7 @@ async def receive_token(param: str, data: Dict):
                         "range": {
                             "sheetId": row[1],
                             "startRowIndex": len(cleaned),
-                            "endRowIndex": lastrow+len(cleaned)-int(row[2]),  
+                            "endRowIndex": lastrow+len(cleaned)-int(row[2])+1,  
                             "startColumnIndex": results[1][j],  
                             "endColumnIndex": results[1][j]+1,
                         },
@@ -517,6 +518,7 @@ async def receive_token(param: str, data: Dict):
             body = {
                 'requests': requests
             }
+            #print(body)
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
         
         print("12")
@@ -526,6 +528,7 @@ async def receive_token(param: str, data: Dict):
         #write the row
         requests.append(value_merge(datarow,lastrow+len(cleaned)-int(row[2])))
 
+        print(requests)
         body = {
                 'requests': requests
         }
