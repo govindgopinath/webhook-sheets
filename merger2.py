@@ -497,6 +497,7 @@ async def receive_token(param: str, data: Dict):
 
         
         print(lastrow+len(cleaned)-int(row[2]))
+
         if (len(results[1])>0): 
             requests = []
             for j in range(len(results[1])):
@@ -546,45 +547,50 @@ def getdata(token,sheetId,tabId,rows):
             sheet_name = sheet['properties']['title']
             break
     
-    range_name = f'{sheet_name}!1:{rows}' 
-    range_all = f'{sheet_name}'
-    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
-    result_all = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_all).execute()
-    values = result.get('values', [])
-    values_all = result_all.get('values', [])
+    if rows!=0:
+        range_name = f'{sheet_name}!1:{rows}' 
+        range_all = f'{sheet_name}'
+        result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_name).execute()
+        result_all = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=range_all).execute()
+        values = result.get('values', [])
+        values_all = result_all.get('values', [])
 
-    if values!=[]:
-        max_len = max(len(keys) for keys in values)
-        formatted_keys = []
+        if values!=[]:
+            max_len = max(len(keys) for keys in values)
+            formatted_keys = []
 
-        for keys in values:
-            while len(keys) < max_len:
-                keys.append('')
-            formatted_keys.append(keys)
-    
-        values = formatted_keys
+            for keys in values:
+                while len(keys) < max_len:
+                    keys.append('')
+                formatted_keys.append(keys)
+        
+            values = formatted_keys
 
-    y1 = 0
-    while y1<len(values):
-        y2 = 0
-        while y2<len(values[y1]):   
-            if values[y1][y2]=='' and y2>0:
-                values[y1][y2] = values[y1][y2-1]
-            y2 = y2 + 1
-        y1 = y1 + 1
-    
-    print(values)
+        y1 = 0
+        while y1<len(values):
+            y2 = 0
+            while y2<len(values[y1]):   
+                if values[y1][y2]=='' and y2>0:
+                    values[y1][y2] = values[y1][y2-1]
+                y2 = y2 + 1
+            y1 = y1 + 1
+        
+        print(values)
 
-    y1 = 0
-    while y1<len(values):
-        y2 = 0
-        while y2<len(values[y1]):   
-            if y1>0 and values[y1][y2]!='':
-                print(y1,y2)
-                values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1][y2]
-            y2 = y2 + 1
-        y1 = y1 + 1
-    
+        y1 = 0
+        while y1<len(values):
+            y2 = 0
+            while y2<len(values[y1]):   
+                if y1>0 and values[y1][y2]!='':
+                    print(y1,y2)
+                    values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1][y2]
+                y2 = y2 + 1
+            y1 = y1 + 1
+        
+    else:
+        values = []
+        values_all = []
+        
     return [values,len(values_all)]
 
 if __name__ == "__main__":
