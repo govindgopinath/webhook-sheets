@@ -352,7 +352,7 @@ async def receive_token(param: str, data: Dict):
         results = collect_keys(data,0,header)
         cleaned = format_keys(results[0])
         cleaned_2 = getback(cleaned)
-        
+        print(cleaned_2)
         #new data cleaning
         datarow = fill_rows(data,0,results[0])
         print("11")
