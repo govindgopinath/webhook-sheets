@@ -21,7 +21,13 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
     if level>(len(keys_dict)-1):
         if level>0:
             keys_dict.append(['']*len(keys_dict[level-1]))
-
+    elif level>0:
+        if len(keys_dict[level])>len(keys_dict[level-1]):
+            y = len(keys_dict[level])
+            while y < keys_dict[level-1]:
+                keys_dict[level].append('')
+                y = y + 1
+                
     print(keys_dict)
     if isinstance(data, dict):
         for key, value in data.items():
@@ -99,7 +105,6 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0):
                     row[rowlevel][index] = value
     else:
         index = keys_dict[level].index(key)
-        print(row)
         row[rowlevel][index] = value
 
     return row
