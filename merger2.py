@@ -143,9 +143,9 @@ def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
 
     if level not in keys_dict:
         if level>0:
-            keys_dict[level] = ['']*len(keys_dict[level-1])
+            keys_dict.append(['']*len(keys_dict[level-1]))
         else:
-           keys_dict[level] = [] 
+           keys_dict.append([])
 
     if isinstance(data, dict):
         for key, value in data.items():
@@ -450,12 +450,6 @@ async def receive_token(param: str, data: Dict):
     query = """SELECT "sheetId", "tabId", "rows" FROM header_structure WHERE "param" = %s;"""
     cur.execute(query, (param,))
     row = cur.fetchone()
-
-    access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
-    spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
-    creds = Credentials(token=access_token)
-    service = build('sheets', 'v4', credentials=creds)
-
     
     if row:
         query = """SELECT "token" FROM oauth_token WHERE "sheetId" = %s;"""
@@ -466,7 +460,6 @@ async def receive_token(param: str, data: Dict):
         access_token = token[0]
         creds = Credentials(token=access_token)
         service = build('sheets', 'v4', credentials=creds)
-        
         
         raw_feed = getdata(token[0],row[0],row[1],row[2])
         
