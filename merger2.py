@@ -91,6 +91,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
     if rowlevel>(len(keys_dict)-1):
         row.append(['']*len(keys_dict[0]))
 
+    print(keys_dict, level)
+    
     if isinstance(data, dict):
         for key, value in data.items():
             if prevkey!= "":
@@ -358,11 +360,9 @@ async def receive_token(param: str, data: Dict):
 
         #new keys cleaning
         results = collect_keys(data,0,header)
-        
         print(results)
         
         cleaned = format_keys(results[0])
-
         print(cleaned)
 
         cleaned_2 = getback(cleaned)
@@ -370,7 +370,6 @@ async def receive_token(param: str, data: Dict):
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
 
-        print("11")
         if len(cleaned) > int(row[2]):
             requests =  [
             {
