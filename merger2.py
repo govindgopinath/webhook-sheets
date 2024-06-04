@@ -77,10 +77,13 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=None,row=[[]],rowlevel=0):
+def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0):
     
+    if row == []:
+        row.append(['']*len(keys_dict[0]))
+
     if rowlevel>(len(keys_dict)-1):
-        row.append(['']*len(keys_dict[level-1]))
+        row.append(['']*len(keys_dict[0]))
 
     if isinstance(data, dict):
         for key, value in data.items():
