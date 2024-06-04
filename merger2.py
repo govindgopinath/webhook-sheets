@@ -368,6 +368,7 @@ async def receive_token(param: str, data: Dict):
         datarow = fill_rows(data,0,cleaned,[])
 
         cleaned_2 = getback(cleaned)
+        print(cleaned,cleaned_2)
         
         if len(cleaned) > int(row[2]):
             requests =  [
