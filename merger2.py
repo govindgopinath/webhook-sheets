@@ -456,8 +456,67 @@ async def receive_token(param: str, data: Dict):
         cur.execute(query, (row[0],))
         token = cur.fetchone()
         print(token)
-        header = getdata(token[0],row[0],row[1],row[2])
-    
+        raw_feed = getdata(token[0],row[0],row[1],row[2])
+        
+        #existing data
+        header = raw_feed[0]
+        lastrow = raw_feed[1]
+
+        #new keys cleaning
+        results = collect_keys(data,0,header)
+        cleaned = format_keys(results[0])
+        cleaned_2 = getback(cleaned)
+        
+        #new data cleaning
+        datarow = fill_rows(data,0,results[0])
+        if len(cleaned > int(row[2])):
+            requests =  [
+            {
+                "insertDimension": {
+                    "range": {
+                        "sheetId": row[1],
+                        "dimension": "ROWS",
+                        "startIndex": int(row[2]),
+                        "endIndex": cleaned+1
+                    },
+                    "inheritFromBefore": False  # or True depending on context
+                }
+            }
+            ]
+            
+            body = {
+                'requests': requests
+            }
+            
+            service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
+
+        if (len(results[1])>0): 
+            requests = []
+            for j in range(len(results[1])):
+                requests.append({
+                    "insertRange": {
+                        "range": {
+                            "sheetId": row[1],
+                            "startRowIndex": len(cleaned),
+                            "endRowIndex": lastrow+len(cleaned)-int(row[2]),  
+                            "startColumnIndex": results[j],  
+                            "endColumnIndex": results[j]+1,
+                        },
+                        "shiftDimension": "COLUMNS" 
+                    }})
+            
+            body = {
+                'requests': requests
+            }
+            service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
+        
+        #write the header
+        merge(cleaned,cleaned_2)
+
+        #write the row
+        value_merge(datarow,lastrow+len(cleaned)-int(row[2]))
+
+        
     return 0
 
 def getdata(token,sheetId,tabId,rows):
