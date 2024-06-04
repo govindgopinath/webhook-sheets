@@ -353,13 +353,14 @@ async def receive_token(param: str, data: Dict):
         header = raw_feed[0]
         lastrow = raw_feed[1]
 
-        print(header)
         #new keys cleaning
         results = collect_keys(data,0,header)
+        
+        print(results)
+        
         cleaned = format_keys(results[0])
         cleaned_2 = getback(cleaned)
-        print(cleaned)
-        print(cleaned_2)
+        
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
         print("11")
@@ -382,11 +383,8 @@ async def receive_token(param: str, data: Dict):
                 'requests': requests
             }
             
-            #print(body)
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
-
-        print(lastrow+len(cleaned)-int(row[2]))
 
         if (len(results[1])>0): 
             requests = []
@@ -406,10 +404,8 @@ async def receive_token(param: str, data: Dict):
             body = {
                 'requests': requests
             }
-            #print(body)
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
-        
-        print("12")
+    
         #write the header
         requests = merge(cleaned,cleaned_2)
 
@@ -501,15 +497,12 @@ def getdata(token,sheetId,tabId,rows):
                     values[y1][y2] = values[y1][y2-1]
                 y2 = y2 + 1
             y1 = y1 + 1
-        
-        print(values)
 
         y1 = 0
         while y1<len(values):
             y2 = 0
             while y2<len(values[y1]):   
                 if y1>0 and values[y1][y2]!='':
-                    print(y1,y2)
                     values[y1][y2] = values[y1-1][y2]+"char$tGPT"+values[y1][y2]
                 y2 = y2 + 1
             y1 = y1 + 1
@@ -518,7 +511,6 @@ def getdata(token,sheetId,tabId,rows):
         values = [[]]
         values_all = []
 
-    print(values)    
     return [values,len(values_all)]
 
 if __name__ == "__main__":
