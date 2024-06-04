@@ -104,6 +104,7 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0,prevkey=""):
                         fill_rows(value[j],level+1,keys_dict,key,row,rowlevel,key)
                 else:
                     index = keys_dict[level].index(key)
+                    print(row)
                     row[rowlevel][index] = value
     else:
         index = keys_dict[level].index(key)
