@@ -102,10 +102,10 @@ data = {
   }
 }
 
-access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
-spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
-creds = Credentials(token=access_token)
-service = build('sheets', 'v4', credentials=creds)
+#access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
+#spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
+#creds = Credentials(token=access_token)
+#service = build('sheets', 'v4', credentials=creds)
 
 clear_formatting_request ={
     'requests': [
@@ -450,12 +450,24 @@ async def receive_token(param: str, data: Dict):
     query = """SELECT "sheetId", "tabId", "rows" FROM header_structure WHERE "param" = %s;"""
     cur.execute(query, (param,))
     row = cur.fetchone()
+
+    access_token = "ya29.a0AXooCgvwHh8vFXyT87Z7RKJrwsmE0Qm-8fGtL3N8qPQUgeoK-G6eUl34SvmpV-ryLnKPNEcBe0V87pws-nZvYKNZp8iaGaFYpKNGQKSlaj7fMiA7hNqG0vBrB1eG7OJAZBkMPA2ajkI65uRkdsr_2b37Ky7v4QISLCH0BWhLzxVXYJgocnoaCgYKAbASARESFQHGX2Mi6qVL0vsN405Bp7wY1Qi8tg0186"
+    spreadsheet_id = "105fr09SfNwsT9v47H6yyQB1joazQjKJ3IhXEm_Pjyn8"
+    creds = Credentials(token=access_token)
+    service = build('sheets', 'v4', credentials=creds)
+
     
     if row:
         query = """SELECT "token" FROM oauth_token WHERE "sheetId" = %s;"""
+    
         cur.execute(query, (row[0],))
         token = cur.fetchone()
         print(token)
+        access_token = token[0]
+        creds = Credentials(token=access_token)
+        service = build('sheets', 'v4', credentials=creds)
+        
+        
         raw_feed = getdata(token[0],row[0],row[1],row[2])
         
         #existing data
@@ -511,10 +523,15 @@ async def receive_token(param: str, data: Dict):
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
         
         #write the header
-        merge(cleaned,cleaned_2)
+        requests = merge(cleaned,cleaned_2)
 
         #write the row
-        value_merge(datarow,lastrow+len(cleaned)-int(row[2]))
+        requests.append(value_merge(datarow,lastrow+len(cleaned)-int(row[2])))
+
+        body = {
+                'requests': requests
+        }
+        service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
         
     return 0
@@ -573,23 +590,6 @@ def getdata(token,sheetId,tabId,rows):
         y1 = y1 + 1
     
     return [values,len(values_all)]
-
-# Collect keys recursively
-#keys_dict = collect_keys(data)
-#print(keys_dict)
-
-# Format keys into the desired structure
-#result = format_keys(keys_dict)
-
-#print(getback(result))
-#requests = merge(format_keys(keys_dict),getback(result))
-
-#body = {
-#    'requests': requests
-#}
-
-#service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id,body=body).execute()
-#print(result)
 
 if __name__ == "__main__":
     import uvicorn
