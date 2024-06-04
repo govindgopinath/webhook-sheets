@@ -207,7 +207,7 @@ def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
         row = []
 
     if rowlevel not in keys_dict:
-        row[rowlevel] = ['']*len(keys_dict[level-1])
+        row.append(['']*len(keys_dict[level-1]))
 
     if isinstance(data, dict):
         for key, value in data.items():
