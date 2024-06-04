@@ -110,6 +110,7 @@ def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0,prevkey=""):
                     row[rowlevel][index] = value
     else:
         index = keys_dict[level].index(key)
+        print(row)
         row[rowlevel][index] = value
 
     return row
@@ -362,6 +363,9 @@ async def receive_token(param: str, data: Dict):
         print(results)
         
         cleaned = format_keys(results[0])
+
+        print(cleaned)
+        
         cleaned_2 = getback(cleaned)
         
         #new data cleaning
