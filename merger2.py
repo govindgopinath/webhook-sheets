@@ -482,7 +482,7 @@ async def receive_token(param: str, data: Dict):
                         "sheetId": row[1],
                         "dimension": "ROWS",
                         "startIndex": int(row[2]),
-                        "endIndex": cleaned+1
+                        "endIndex": len(cleaned)+1
                     },
                     "inheritFromBefore": False  # or True depending on context
                 }
