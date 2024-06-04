@@ -22,9 +22,9 @@ def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
         colchanges = []
     
     if keys_dict is None:
-        keys_dict = {}
+        keys_dict = []
 
-    if level not in keys_dict:
+    if level>(len(keys_dict)-1):
         if level>0:
             keys_dict.append(['']*len(keys_dict[level-1]))
         else:
@@ -90,7 +90,7 @@ def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
     if row is None:
         row = []
 
-    if rowlevel not in keys_dict:
+    if rowlevel>(len(keys_dict)-1):
         row.append(['']*len(keys_dict[level-1]))
 
     if isinstance(data, dict):
