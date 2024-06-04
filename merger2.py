@@ -408,19 +408,28 @@ async def receive_token(param: str, data: Dict):
         #write the row
         requests.append(value_merge(datarow,lastrow+len(cleaned)-int(row[2])))
 
-        clear_formatting_request ={
+        clear_formatting_request = {
         'requests': [{
             'unmergeCells': {
                 'range': {
-                    'sheetId': 0  # Assuming you want to unmerge cells in the first sheet
-                }}
+                    'sheetId': 0, 
+                    "startRowIndex": 0,
+                    "endRowIndex": len(cleaned),  
+                    "startColumnIndex": 0,  
+                    "endColumnIndex": len(cleaned[0])
+                    },
+                }
             }]}
         
         clear_values_request = {
         'requests': [{
             'updateCells': {
                 'range': {
-                    'sheetId': 0  # Assuming you want to clear the first sheet
+                     'sheetId': 0, 
+                    "startRowIndex": 0,
+                    "endRowIndex": len(cleaned),  
+                    "startColumnIndex": 0,  
+                    "endColumnIndex": len(cleaned[0]) 
                     },
                 'fields': 'userEnteredValue'
                 }   
