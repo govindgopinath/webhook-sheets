@@ -24,7 +24,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
     elif level>0:
         if len(keys_dict[level])<len(keys_dict[level-1]):
             y = len(keys_dict[level])
-            while y < keys_dict[level-1]:
+            while y < len(keys_dict[level-1]):
                 keys_dict[level].append('')
                 y = y + 1
 
