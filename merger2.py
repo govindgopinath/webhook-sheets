@@ -504,7 +504,7 @@ def getdata(token,sheetId,tabId,rows):
             y1 = y1 + 1
         
     else:
-        values = []
+        values = [[]]
         values_all = []
 
     print(values)    
