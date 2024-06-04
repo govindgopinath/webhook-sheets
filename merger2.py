@@ -27,8 +27,6 @@ def collect_keys(data, level=0, keys_dict=None, prevkey="", colchanges=None):
     if level>(len(keys_dict)-1):
         if level>0:
             keys_dict.append(['']*len(keys_dict[level-1]))
-        else:
-            keys_dict.append([])
 
     print(keys_dict)
     if isinstance(data, dict):
