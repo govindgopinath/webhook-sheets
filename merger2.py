@@ -353,6 +353,7 @@ async def receive_token(param: str, data: Dict):
         header = raw_feed[0]
         lastrow = raw_feed[1]
 
+        print(header)
         #new keys cleaning
         results = collect_keys(data,0,header)
         cleaned = format_keys(results[0])
