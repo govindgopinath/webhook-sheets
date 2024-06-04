@@ -221,6 +221,9 @@ def fill_rows(data, level=0, keys_dict=None,row=None,rowlevel=0):
                 else:
                     index = keys_dict[level].index(key)
                     row[rowlevel][index] = value
+    else:
+        index = keys_dict[level].index(key)
+        row[rowlevel][index] = value
 
     return row
 
