@@ -83,7 +83,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=None,row=[],rowlevel=0,prevkey=""):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -343,7 +343,6 @@ async def receive_token(param: str, data: Dict):
     
     if row:
         query = """SELECT "token" FROM oauth_token WHERE "sheetId" = %s;"""
-    
         cur.execute(query, (row[0],))
         token = cur.fetchone()
         print(token)
@@ -365,11 +364,12 @@ async def receive_token(param: str, data: Dict):
         cleaned = format_keys(results[0])
 
         print(cleaned)
-        
+
         cleaned_2 = getback(cleaned)
         
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
+
         print("11")
         if len(cleaned) > int(row[2]):
             requests =  [
