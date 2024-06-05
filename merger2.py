@@ -227,7 +227,7 @@ def merge(keys,keys1):
                 })
             
         y1 = y1 + 1
-
+    """
     y1 = 0
     while y1<len(keys[0]):
         count = 1
@@ -267,6 +267,7 @@ def merge(keys,keys1):
                     }
                 })
         y1 = y1 + 1
+        """
 
     return requests            
 
