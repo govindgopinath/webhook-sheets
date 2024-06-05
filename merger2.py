@@ -38,10 +38,10 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                     rev_index = keys_dict[level-1][::-1].index(prevkey)
                     y = len(keys_dict[level-1])-rev_index-1
                     if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
-                        y = y + 1 
+                        y = y + 1
                     keys_dict[level].insert(y,key)
-                    #print(level,y,key)
-                    colchanges.append(y)
+                    if not isinstance(value,dict) or isinstance(value,list):
+                        colchanges.append(y)
                     if len(keys_dict[level])>y:
                         level2=level
                         oldkey = key
