@@ -106,7 +106,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        fill_rows(value[j],level+1,keys_dict,row,rowlevel,key)
+                        fill_rows(value[j],level+1,keys_dict,row,rowlevel+j,key)
                 else:
                     index = keys_dict[level].index(key)
                     #print(row)
@@ -171,7 +171,7 @@ def merge(keys,keys1):
             },
             "rows": [{
                 "values": [
-                {"userEnteredValue": {"stringValue": cell}} for cell in row
+                {"userEnteredValue": {"stringValue": str(cell)}} for cell in row
             ]} for row in keys1
         ],
         "fields": "userEnteredValue"
@@ -273,9 +273,9 @@ def value_merge(rows,pos):
             },
             "rows": [{
                 "values": [
-                {"userEnteredValue": {"stringValue": cell}} for cell in row
+                {"userEnteredValue": {"stringValue": str(cell)}} for cell in row
             ]} for row in rows
-        ],
+        ],  
         "fields": "userEnteredValue"
         }
     })
