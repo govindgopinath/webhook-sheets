@@ -40,6 +40,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                     if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
                         y = y + 1 
                     keys_dict[level].insert(y,key)
+                    print(level,y,key)
                     colchanges.append(y)
                     if len(keys_dict[level])>y:
                         level2=level
