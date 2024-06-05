@@ -61,10 +61,11 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                             level2 = level2-1
                         
                         level2=level
-                        while level2<len(keys_dict)-1:
-                            keys_dict[level2+1].insert(y,'')
-                            level2 = level2+1
-                
+                        if not isinstance(value,dict) and not isinstance(value,list):
+                            while level2<len(keys_dict)-1:
+                                keys_dict[level2+1].insert(y,'')
+                                level2 = level2+1
+                    
                 if isinstance(value,dict):
                     collect_keys(value,level+1,keys_dict,key,colchanges)
             
