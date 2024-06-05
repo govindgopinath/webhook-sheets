@@ -39,6 +39,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                     y = len(keys_dict[level-1])-rev_index-1
                     if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
                         y = y + 1
+                    print(keys_dict)
                     keys_dict[level].insert(y,key)
                     if not isinstance(value,dict) or isinstance(value,list):
                         colchanges.append(y)
@@ -116,11 +117,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                 else:
                     index = keys_dict[level].index(key)
                     #print(row)
-                    row[rowlevel][index] = value
+                    row[rowlevel][index] = str(value)
     else:
         index = keys_dict[level].index(key)
         #print(row)
-        row[rowlevel][index] = value
+        row[rowlevel][index] = str(value)
 
     return row
 
