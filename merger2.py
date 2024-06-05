@@ -361,7 +361,7 @@ async def receive_token(param: str, data: Dict):
         print(header)
 
         #new keys cleaning
-        results = collect_keys(data,0,header)
+        results = collect_keys(data,0,header,"",[])
         print(results)
         
         cleaned = format_keys(results[0])
