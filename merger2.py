@@ -508,7 +508,7 @@ def getdata(token,sheetId,tabId,rows):
                 y2 = 0
                 flag = values[y1-1][0]
                 while y2<len(values[y1]):
-                    if values[y1-1][y2]==flag:
+                    if values[y1-1][y2]==flag and values[y1][y2]=='':
                         values[y1][y2] = values[y1][y2-1]
                     else:
                         flag = values[y1-1][y2]
