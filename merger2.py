@@ -218,7 +218,6 @@ def merge(keys,keys1):
             
         y1 = y1 + 1
 
-    """
     y1 = 0
     while y1<len(keys[0]):
         count = 1
@@ -257,7 +256,7 @@ def merge(keys,keys1):
                     'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
                     }
                 })
-        y1 = y1 + 1"""
+        y1 = y1 + 1
 
     return requests            
 
@@ -415,6 +414,7 @@ async def receive_token(param: str, data: Dict):
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
     
         #write the header
+        requests = []
         requests = merge(cleaned,cleaned_2)
 
         #write the row
