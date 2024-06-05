@@ -89,7 +89,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
     if row == []:
         row.append(['']*len(keys_dict[0]))
 
-    if rowlevel>(len(keys_dict)-1):
+    if rowlevel>(len(row)-1):
         row.append(['']*len(keys_dict[0]))
 
     #print(keys_dict, level)
