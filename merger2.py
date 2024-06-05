@@ -80,7 +80,8 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        collect_keys(value[j],level+1,keys_dict,key,colchanges)
+                        if not isinstance(value[j],list):
+                            collect_keys(value[j],level+1,keys_dict,key,colchanges)
 
     return [keys_dict,colchanges]
 
@@ -106,7 +107,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
             
                 elif isinstance(value,list):
                     for j in range(0,len(value)):
-                        fill_rows(value[j],level+1,keys_dict,row,rowlevel+j,key)
+                        if not isinstance(value[j],list):
+                            fill_rows(value[j],level+1,keys_dict,row,rowlevel+j,key)
+                        else:
+                            index = keys_dict[level].index(key)
+                            row[rowlevel][index] = value[j]
+
                 else:
                     index = keys_dict[level].index(key)
                     #print(row)
