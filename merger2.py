@@ -218,7 +218,7 @@ def merge(keys,keys1):
             
         y1 = y1 + 1
 
-
+    """
     y1 = 0
     while y1<len(keys[0]):
         count = 1
@@ -257,7 +257,7 @@ def merge(keys,keys1):
                     'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
                     }
                 })
-        y1 = y1 + 1
+        y1 = y1 + 1"""
 
     return requests            
 
