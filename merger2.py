@@ -28,7 +28,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                 keys_dict[level].append('')
                 y = y + 1
 
-    print(keys_dict)
+    #print(keys_dict)
     if isinstance(data, dict):
         for key, value in data.items():
             if prevkey!= "":
@@ -40,7 +40,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                     if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
                         y = y + 1 
                     keys_dict[level].insert(y,key)
-                    print(level,y,key)
+                    #print(level,y,key)
                     colchanges.append(y)
                     if len(keys_dict[level])>y:
                         level2=level
@@ -92,14 +92,14 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
     if rowlevel>(len(keys_dict)-1):
         row.append(['']*len(keys_dict[0]))
 
-    print(keys_dict, level)
+    #print(keys_dict, level)
     
     if isinstance(data, dict):
         for key, value in data.items():
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
-                print(key)
-                print(keys_dict)
+                #print(key)
+                #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
@@ -109,11 +109,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                         fill_rows(value[j],level+1,keys_dict,row,rowlevel,key)
                 else:
                     index = keys_dict[level].index(key)
-                    print(row)
+                    #print(row)
                     row[rowlevel][index] = value
     else:
         index = keys_dict[level].index(key)
-        print(row)
+        #print(row)
         row[rowlevel][index] = value
 
     return row
@@ -357,14 +357,14 @@ async def receive_token(param: str, data: Dict):
         header = raw_feed[0]
         lastrow = raw_feed[1]
 
-        print(header)
+        #print(header)
 
         #new keys cleaning
         results = collect_keys(data,0,header,"",[])
         print(results)
         
         cleaned = format_keys(results[0])
-        print(cleaned)
+        #print(cleaned)
 
         #new data cleaning
         datarow = fill_rows(data,0,cleaned,[])
@@ -392,9 +392,8 @@ async def receive_token(param: str, data: Dict):
             
             service.spreadsheets().batchUpdate(spreadsheetId=row[0],body=body).execute()
 
-
+        requests = []
         if (len(results[1])>0): 
-            requests = []
             for j in range(len(results[1])):
                 requests.append({
                     "insertRange": {
