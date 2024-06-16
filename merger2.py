@@ -114,10 +114,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                     colrep = []
                     if (deep>1):
                         m = 0
-                        for m in row:
+                        for m in range(0,len(row[0])):
                             deepcount = 0
                             for n in range(0,len(row)):
-                                if m[n]!='':
+                                if row[n][m]!='':
                                     deepcount = deepcount+1
                             if deepcount>1:
                                 colrep.append(n)
