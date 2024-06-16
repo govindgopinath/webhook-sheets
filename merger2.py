@@ -120,7 +120,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                                 if row[n][m]!='':
                                     deepcount = deepcount+1
                             if deepcount>1:
-                                colrep.append(n)
+                                colrep.append(m)
                         
                         empty_rows = [['' for _ in range(len(row[0]))] for _ in range(len(row))]                            
                         for n in range(0,len(colrep)):
