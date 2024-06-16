@@ -136,7 +136,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                             fill_rows(value[j],level+1,keys_dict,row,rowlevel+deep*j,key)
                         else:
                             index = keys_dict[level].index(key)
-                            row[rowlevel][index] = repr(value)
+                            row[rowlevel+deep*j][index] = repr(value)
                             break
 
                 else:
