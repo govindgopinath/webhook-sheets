@@ -114,7 +114,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                     colrep = []
                     if (deep>1):
                         m = 0
-                        for m in range(0,len(row[0])):
+                        for m in range(0,len(row[0])):  
                             deepcount = 0
                             for n in range(0,len(row)):
                                 if row[n][m]!='':
@@ -133,7 +133,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
 
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):
-                            fill_rows(value[j],level+1,keys_dict,row,rowlevel+deep*j,key)
+                            fill_rows(value[j],level+1,keys_dict,row,rowlevel,key)
                         else:
                             index = keys_dict[level].index(key)
                             row[rowlevel+deep*j][index] = repr(value)
