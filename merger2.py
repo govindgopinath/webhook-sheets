@@ -39,7 +39,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
                     y = len(keys_dict[level-1])-rev_index-1
                     if 'char$tGPT'.join(keys_dict[level][y].split('char$tGPT')[:-1])==prevkey:
                         y = y + 1
-                    print(keys_dict)
+                    #print(keys_dict)
                     keys_dict[level].insert(y,key)
                     if not isinstance(value,dict) or isinstance(value,list):
                         colchanges.append(y)
@@ -122,12 +122,13 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                             if deepcount>1:
                                 colrep.append(m)
                         
+                        print(colrep)
                         empty_rows = [['' for _ in range(len(row[0]))] for _ in range(len(row))]                            
                         for n in range(0,len(colrep)):
                             for o in range(0,len(row)):
                                 empty_rows[o][colrep[n]] = row[o][colrep[n]]
                         
-                        for n in range(0,deep):
+                        for n in range(0,deep-1):
                             row.extend(empty_rows)                                                          
 
                     for j in range(0,len(value)):
@@ -376,7 +377,7 @@ async def receive_token(param: str, data: Dict):
         query = """SELECT "token" FROM oauth_token WHERE "sheetId" = %s;"""
         cur.execute(query, (row[0],))
         token = cur.fetchone()
-        print(token)
+        #print(token)
         access_token = token[0]
         creds = Credentials(token=access_token)
         service = build('sheets', 'v4', credentials=creds)
@@ -391,7 +392,7 @@ async def receive_token(param: str, data: Dict):
 
         #new keys cleaning
         results = collect_keys(data,0,header,"",[])
-        print(results)
+        #print(results)
         
         cleaned = format_keys(results[0])
         #print(cleaned)
@@ -479,7 +480,7 @@ async def receive_token(param: str, data: Dict):
         service.spreadsheets().batchUpdate(spreadsheetId=row[0], body=clear_values_request).execute()
         service.spreadsheets().batchUpdate(spreadsheetId=row[0], body=clear_formatting_request).execute()
 
-        print(requests)
+        #print(requests)
         body = {
                 'requests': requests
         }
