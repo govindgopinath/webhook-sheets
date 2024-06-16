@@ -128,7 +128,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                             for o in range(0,len(row)):
                                 empty_rows[o][colrep[n]] = row[o][colrep[n]]
                         
-                        for n in range(0,deep-1):
+                        for n in range(0,len(value)-1):
                             row.extend(empty_rows)                                                          
 
                     for j in range(0,len(value)):
