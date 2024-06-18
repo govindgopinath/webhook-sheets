@@ -118,9 +118,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey=""):
                             print(rowlevel)
                         else:
                             index = keys_dict[level].index(key)
-                            row[rowlevel[0]+j][index] = repr(value)
+                            row[rowlevel[0]][index] = repr(value)
+                            rowlevel[0] = rowlevel[0] + 1
                             break
-                    rowlevel[0] = rowlevel[0] - len(value) + 1
+                    rowlevel[0] = rowlevel[0] - len(value)
 
                 else:
                     index = keys_dict[level].index(key)
