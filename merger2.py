@@ -122,6 +122,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey=""):
                             rowlevel[0] = rowlevel[0] + 1
                             break
                     rowlevel[0] = rowlevel[0] - len(value)
+                    print(rowlevel)
 
                 else:
                     index = keys_dict[level].index(key)
