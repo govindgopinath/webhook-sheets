@@ -114,6 +114,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey=""):
                         if isinstance(value[j],dict):
                             fill_rows(value[j],level+1,keys_dict,row,[rowlevel[0]],key)
                             rowlevel[0] = rowlevel[0] + 1
+                            print(row)
+                            print(rowlevel)
                         else:
                             index = keys_dict[level].index(key)
                             row[rowlevel[0]+j][index] = repr(value)
