@@ -89,12 +89,12 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey="",pos=0):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos=0):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
 
-    if rowlevel[0]>(len(row)-1):
+    if rowlevel>(len(row)-1):
         row.append(['']*len(keys_dict[0]))
 
     #print(keys_dict, level)
@@ -107,32 +107,32 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey="",pos=0):
                 #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,[rowlevel[0]],key)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
                 elif isinstance(value,list):
                     if (pos==0):
-                        track = rowlevel[0]                                                         
+                        track = rowlevel                                                         
                     for j in range(0,len(value)):
-                        if isinstance(value[j],dict):
-                            fill_rows(value[j],level+1,keys_dict,row,[rowlevel[0]],key, 1)
-                            rowlevel[0] = rowlevel[0] + 1
+                        if isinstance(value[j],dict):                        
+                            fill_rows(value[j],level+1,keys_dict,row,rowlevel,key, 1)
+                            rowlevel = rowlevel + 1
                             print(row)
                             print(rowlevel)
                         else:
                             index = keys_dict[level].index(key)
-                            row[rowlevel[0]][index] = repr(value)
+                            row[rowlevel][index] = repr(value)
                             break
                     if (pos==0):
-                        rowlevel[0]=track
+                        rowlevel = track
                     
                 else:
                     index = keys_dict[level].index(key)
                     #print(row)
-                    row[rowlevel[0]][index] = str(value)
+                    row[rowlevel][index] = str(value)
     else:
         index = keys_dict[level].index(key)
         #print(row)
-        row[rowlevel[0]][index] = str(value)
+        row[rowlevel][index] = str(value)
 
     return row
 
