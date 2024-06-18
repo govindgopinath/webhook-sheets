@@ -109,9 +109,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos=0):
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
-                elif isinstance(value,list):
-                    if (pos==0):
-                        track = rowlevel                                                         
+                elif isinstance(value,list):                                                       
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):                        
                             fill_rows(value[j],level+1,keys_dict,row,rowlevel,key, 1)
@@ -122,8 +120,6 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos=0):
                             index = keys_dict[level].index(key)
                             row[rowlevel][index] = repr(value)
                             break
-                    if (pos==0):
-                        rowlevel = track
                     
                 else:
                     index = keys_dict[level].index(key)
