@@ -109,34 +109,13 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
-                elif isinstance(value,list):
-                    deep = len(row)
-                    colrep = []
-                    if (deep>1):
-                        m = 0
-                        for m in range(0,len(row[0])):  
-                            deepcount = 0
-                            for n in range(0,len(row)):
-                                if row[n][m]!='':
-                                    deepcount = deepcount+1
-                            if deepcount>1:
-                                colrep.append(m)
-                        
-                        print(colrep)
-                        empty_rows = [['' for _ in range(len(row[0]))] for _ in range(len(row))]                            
-                        for n in range(0,len(colrep)):
-                            for o in range(0,len(row)):
-                                empty_rows[o][colrep[n]] = row[o][colrep[n]]
-                        
-                        for n in range(0,len(value)-1):
-                            row.extend(empty_rows)                                                          
-
+                elif isinstance(value,list):                                                         
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):
-                            fill_rows(value[j],level+1,keys_dict,row,rowlevel,key)
+                            fill_rows(value[j],level+1,keys_dict,row,rowlevel+j,key)
                         else:
                             index = keys_dict[level].index(key)
-                            row[rowlevel+deep*j][index] = repr(value)
+                            row[rowlevel+j][index] = repr(value)
                             break
 
                 else:
