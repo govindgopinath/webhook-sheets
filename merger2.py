@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey=""):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey="",pos=0):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -109,21 +109,22 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=[0],prevkey=""):
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,[rowlevel[0]],key)
             
-                elif isinstance(value,list):                                                         
+                elif isinstance(value,list):
+                    if (pos==0):
+                        track = rowlevel[0]                                                         
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):
-                            fill_rows(value[j],level+1,keys_dict,row,[rowlevel[0]],key)
+                            fill_rows(value[j],level+1,keys_dict,row,[rowlevel[0]],key, 1)
                             rowlevel[0] = rowlevel[0] + 1
                             print(row)
                             print(rowlevel)
                         else:
                             index = keys_dict[level].index(key)
                             row[rowlevel[0]][index] = repr(value)
-                            rowlevel[0] = rowlevel[0] + 1
                             break
-                    rowlevel[0] = rowlevel[0] - len(value)
-                    print(rowlevel)
-
+                    if (pos==0):
+                        rowlevel[0]=track
+                    
                 else:
                     index = keys_dict[level].index(key)
                     #print(row)
