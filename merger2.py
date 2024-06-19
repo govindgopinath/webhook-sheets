@@ -110,6 +110,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
                 elif isinstance(value,list):                                                       
+                    z=0
                     if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                         if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
