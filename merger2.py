@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},starter={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -118,6 +118,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
 
                     print(pos)
                     poslevel = rowlevel
+                    starter = rowlevel
                     print(rowlevel)
 
                     if key not in pos:
@@ -125,7 +126,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                     
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):                        
-                            fill_rows(value[j],level+1,keys_dict,row,rowlevel,key)
+                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key)
                             poskey = key
                             print(row)
                             while 'char$tGPT' in poskey:  
@@ -134,17 +135,17 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                                 else:    
                                     poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
                                 
-                                print(rowlevel,poslevel)
+                                print(starter,poslevel)
 
                                 if poskey in pos:
-                                    if poslevel != rowlevel:
+                                    if starter != rowlevel:
                                         pos[poskey] = pos[poskey] + 1
                                     elif poslevel == rowlevel and z==1:
                                         pos[poskey] = pos[poskey] + 1
                                 else:
                                     pos[poskey] = 1                            
                             
-                            rowlevel = poslevel + pos[key]
+                            poslevel = starter + pos[key]
             
                         else:
                             index = keys_dict[level].index(key)
