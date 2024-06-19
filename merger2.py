@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},starter={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -409,7 +409,7 @@ async def receive_token(param: str, data: Dict):
         #print(cleaned)
 
         #new data cleaning
-        datarow = fill_rows(data,0,cleaned,[])
+        datarow = fill_rows(data,0,cleaned,[],0,"",{})
 
         cleaned_2 = getback(cleaned.copy())
         
