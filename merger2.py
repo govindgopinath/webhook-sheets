@@ -107,7 +107,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                 #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos)
             
                 elif isinstance(value,list):                                                       
                     z=0
