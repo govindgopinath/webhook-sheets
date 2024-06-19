@@ -126,7 +126,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                     
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):                        
-                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key)
+                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
                             poskey = key
                             print(row)
                             while 'char$tGPT' in poskey:  
@@ -410,7 +410,7 @@ async def receive_token(param: str, data: Dict):
 
         #new data cleaning
         pos = {}
-        datarow = fill_rows(data,0,cleaned,[],0,"",{})
+        datarow = fill_rows(data,0,cleaned,[],0,"",pos)
 
         cleaned_2 = getback(cleaned.copy())
         
