@@ -122,7 +122,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                                     pos[poskey] = pos[poskey] + 1 
                                 else:
                                     pos[poskey] = 1                            
-                                poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
+                                
+                                if len(poskey.split('char$tGPT')[:-1])==1:
+                                    poskey = poskey.split('char$tGPT')[0]
+                                else:    
+                                    poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
                             
                             if poskey in pos:
                                 pos[poskey] = pos[poskey] + 1
