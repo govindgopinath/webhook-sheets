@@ -112,9 +112,13 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                 elif isinstance(value,list):                                                       
                     if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                         rowlevel = rowlevel + pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
-                   
+
+                    print(pos)
                     poslevel = rowlevel
                     print(rowlevel)
+
+                    if key not in pos:
+                        pos[key]=1
                     
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):                        
@@ -122,22 +126,18 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                             poskey = key
                             print(row)
                             while 'char$tGPT' in poskey:  
+                                if len(poskey.split('char$tGPT')[:-1])==1:
+                                    poskey = poskey.split('char$tGPT')[0]
+                                else:    
+                                    poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
+                                
                                 print(rowlevel,poslevel)
+
                                 if poskey in pos:
                                     if poslevel != rowlevel:
                                         pos[poskey] = pos[poskey] + 1
                                 else:
                                     pos[poskey] = 1                            
-                                
-                                if len(poskey.split('char$tGPT')[:-1])==1:
-                                    poskey = poskey.split('char$tGPT')[0]
-                                else:    
-                                    poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
-                            
-                            if poskey in pos:
-                                pos[poskey] = pos[poskey] + 1
-                            else:
-                                pos[poskey] = 1
                             
                             rowlevel = poslevel + pos[key]
             
