@@ -122,6 +122,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                             poskey = key
                             print(row)
                             while 'char$tGPT' in poskey:  
+                                print(rowlevel,poslevel)
                                 if poskey in pos:
                                     if poslevel != rowlevel:
                                         pos[poskey] = pos[poskey] + 1
