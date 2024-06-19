@@ -138,7 +138,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},st
                                 print(starter,poslevel)
 
                                 if poskey in pos:
-                                    if starter != rowlevel:
+                                    if poslevel != rowlevel:
                                         pos[poskey] = pos[poskey] + 1
                                     elif poslevel == rowlevel and z==1:
                                         pos[poskey] = pos[poskey] + 1
