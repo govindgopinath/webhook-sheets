@@ -113,6 +113,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                     if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                         if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
+                            z = 1
 
                     print(pos)
                     poslevel = rowlevel
@@ -136,6 +137,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
 
                                 if poskey in pos:
                                     if poslevel != rowlevel:
+                                        pos[poskey] = pos[poskey] + 1
+                                    elif poslevel == rowlevel and z==1:
                                         pos[poskey] = pos[poskey] + 1
                                 else:
                                     pos[poskey] = 1                            
@@ -317,7 +320,7 @@ def value_merge(rows,pos):
         }
     })
 
-    y1 = 0
+    """y1 = 0
     while y1<len(rows[0]):
         count = 1
         y2 = 0
@@ -355,7 +358,7 @@ def value_merge(rows,pos):
                     'mergeType': 'MERGE_ALL'  # Other options include 'MERGE_COLUMNS', 'MERGE_ROWS'
                     }
                 })
-        y1 = y1 + 1
+        y1 = y1 + 1"""
 
     return requests   
 
