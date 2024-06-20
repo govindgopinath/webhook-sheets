@@ -150,8 +150,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
                                     
                                     #print(starter,poslevel)
-                                    if key1 in pos and poskey in pos:
-                                        if pos[key1] > pos[poskey]:
+                                    if key1 in pos:
+                                        if poskey in pos:
+                                            if pos[key1] > pos[poskey]:
+                                                pos[poskey] = pos[key1]
+                                        else:
                                             pos[poskey] = pos[key1]
 
                                     if poskey in pos and key in list2:
