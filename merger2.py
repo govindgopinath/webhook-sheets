@@ -131,6 +131,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                         if isinstance(value[j],dict):                        
                             fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
                             poskey = key
+                            print(poskey)
                             print(row)
                             while 'char$tGPT' in poskey:  
                                 if len(poskey.split('char$tGPT')[:-1])==1:
