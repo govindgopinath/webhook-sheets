@@ -124,6 +124,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                         else:
                             rowlevel = pos["0"]
 
+
+
                         if rowlevel>(len(row)-1):
                             row.append(['']*len(keys_dict[0]))    
 
@@ -151,10 +153,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                     
                                     #print(starter,poslevel)
                                     if key1 in pos:
-                                        if poskey in pos:
+                                        if poskey in pos and poskey in list2:
                                             if pos[key1] > pos[poskey]:
                                                 pos[poskey] = pos[key1]
-                                        else:
+                                        elif poskey not in pos and poskey in list2:
                                             pos[poskey] = pos[key1]
 
                                     if poskey in pos and key in list2:
