@@ -116,6 +116,9 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                             z = 1
 
+                    if rowlevel>(len(row)-1):
+                        row.append(['']*len(keys_dict[0]))    
+
                     print(pos)
                     poslevel = rowlevel
                     starter = rowlevel
