@@ -118,7 +118,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                             z = 1
                     else:
-                            rowlevel = pos["0"]
+                            if not isinstance(value[0],dict): 
+                                index = keys_dict[level].index(key)
+                                row[rowlevel][index] = repr(value)
+                                break
+                            else:
+                                rowlevel = pos["0"]
 
                     if rowlevel>(len(row)-1):
                         row.append(['']*len(keys_dict[0]))    
@@ -162,12 +167,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                 else:
                                     pos[poskey] = 1                            
                             
-                            poslevel = starter + pos[key]
-            
-                        else:
-                            index = keys_dict[level].index(key)
-                            row[rowlevel][index] = repr(value)
-                            break             
+                            poslevel = starter + pos[key]         
                     
                 else:
                     index = keys_dict[level].index(key)
