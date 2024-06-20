@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},list={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},list2={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -101,17 +101,18 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
     
     if isinstance(data, dict):
         for key, value in data.items():
+            list2[key]=0
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
                 #print(key)
                 #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos,list2)
             
                 elif isinstance(value,list):                                                       
                     z = 0
-                    list[key] = 1
+                    list2[key] = 1
                     if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                         if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
@@ -132,7 +133,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                     
                     for j in range(0,len(value)):
                         if isinstance(value[j],dict):                        
-                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
+                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos,list2)
                             poskey = key
                             print(poskey)
                             print(pos)
@@ -145,7 +146,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                 
                                 print(starter,poslevel)
 
-                                if poskey in pos and key in list:
+                                if poskey in pos and key in list2:
                                     if poslevel != starter:
                                         pos[poskey] = pos[poskey] + 1
                                     elif poslevel == starter and z==1:
