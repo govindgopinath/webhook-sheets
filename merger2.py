@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},list={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -111,10 +111,13 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
             
                 elif isinstance(value,list):                                                       
                     z = 0
+                    list[key] = 1
                     if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                         if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                             z = 1
+                    else:
+                            rowlevel = pos[0]
 
                     if rowlevel>(len(row)-1):
                         row.append(['']*len(keys_dict[0]))    
@@ -142,11 +145,16 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                                 
                                 print(starter,poslevel)
 
-                                if poskey in pos:
+                                if poskey in pos and key in list:
                                     if poslevel != starter:
                                         pos[poskey] = pos[poskey] + 1
                                     elif poslevel == starter and z==1:
                                         pos[poskey] = pos[poskey] + 1
+                                    
+                                    if 'char$tGPT' not in poskey:
+                                        if pos[0] < poskey:
+                                            pos[0] = pos[poskey]
+                                
                                 else:
                                     pos[poskey] = 1                            
                             
@@ -415,6 +423,7 @@ async def receive_token(param: str, data: Dict):
 
         #new data cleaning
         pos = {}
+        pos[0] = 0
         datarow = fill_rows(data,0,cleaned,[],0,"",pos)
 
         cleaned_2 = getback(cleaned.copy())
