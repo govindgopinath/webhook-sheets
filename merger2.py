@@ -168,7 +168,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                             if pos["0"] < pos[poskey]:
                                                 pos["0"] = pos[poskey]
                                     
-                                    else:
+                                    elif poskey in list2:
                                         pos[poskey] = 1                            
                                 
                                 poslevel = starter + pos[key]         
