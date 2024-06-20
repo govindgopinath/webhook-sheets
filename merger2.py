@@ -138,13 +138,16 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                             print(poskey)
                             print(pos)
                             print(row)
-                            while 'char$tGPT' in poskey:  
+                            while 'char$tGPT' in poskey:
+                                key1 = poskey
                                 if len(poskey.split('char$tGPT')[:-1])==1:
                                     poskey = poskey.split('char$tGPT')[0]
                                 else:    
                                     poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
                                 
                                 print(starter,poslevel)
+                                if key1 in pos and pos[key1] > pos[poskey]:
+                                    pos[poskey] = pos[key1]
 
                                 if poskey in pos and key in list2:
                                     if poslevel != starter:
