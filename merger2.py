@@ -123,7 +123,13 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                 z = 1
                         else:
                             rowlevel = pos["0"]
-
+                            key2 = key
+                            while 'char$tGPT' in key2:
+                                if len(key2.split('char$tGPT')[:-1])==1:
+                                    key2 = poskey.split('char$tGPT')[0]
+                                else:    
+                                    key2 = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
+                                pos[key2] = pos["0"]
 
 
                         if rowlevel>(len(row)-1):
