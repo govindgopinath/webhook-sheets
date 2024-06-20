@@ -161,7 +161,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                     if poskey in pos and key in list2:
                                         if poslevel != starter:
                                             pos[poskey] = pos[poskey] + 1
-                                        elif poslevel == starter and z==1:
+                                        elif poslevel == starter and z==1 and key in list2:
                                             pos[poskey] = pos[poskey] + 1
                                         
                                         if 'char$tGPT' not in poskey:
