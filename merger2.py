@@ -117,7 +117,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                             z = 1
                     else:
-                            rowlevel = pos[0]
+                            rowlevel = pos["0"]
 
                     if rowlevel>(len(row)-1):
                         row.append(['']*len(keys_dict[0]))    
@@ -152,8 +152,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         pos[poskey] = pos[poskey] + 1
                                     
                                     if 'char$tGPT' not in poskey:
-                                        if pos[0] < poskey:
-                                            pos[0] = pos[poskey]
+                                        if pos["0"] < pos[poskey]:
+                                            pos["0"] = pos[poskey]
                                 
                                 else:
                                     pos[poskey] = 1                            
@@ -423,7 +423,7 @@ async def receive_token(param: str, data: Dict):
 
         #new data cleaning
         pos = {}
-        pos[0] = 0
+        pos["0"] = 0
         datarow = fill_rows(data,0,cleaned,[],0,"",pos)
 
         cleaned_2 = getback(cleaned.copy())
