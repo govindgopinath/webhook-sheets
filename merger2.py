@@ -140,12 +140,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                                 else:    
                                     poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
                                 
-                                print(starter,poslevel,rowlevel)
+                                print(starter,poslevel)
 
                                 if poskey in pos:
-                                    if poslevel != rowlevel and z==1:
+                                    if poslevel != starter:
                                         pos[poskey] = pos[poskey] + 1
-                                    elif poslevel == rowlevel and z==1:
+                                    elif poslevel == starter and z==1:
                                         pos[poskey] = pos[poskey] + 1
                                 else:
                                     pos[poskey] = 1                            
