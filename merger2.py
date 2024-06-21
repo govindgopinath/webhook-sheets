@@ -122,7 +122,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
                         print(substring,occ_prevkey)
                         print(row)
-                        if len(occ_rowlevel)==1 and len(occ_prevkey_2):
+                        if len(occ_rowlevel)==1 and len(occ_prevkey_2)==1:
                             print(key, rowlevel)
                             pos = rowlevel
                         
