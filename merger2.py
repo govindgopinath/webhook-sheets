@@ -89,22 +89,18 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, maxpos=0):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
 
     if rowlevel>(len(row)-1):
         row.append(['']*len(keys_dict[0]))
-
-    #print(keys_dict, level)
     
     if isinstance(data, dict):
         for key, value in data.items():
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
-                #print(key)
-                #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos)
@@ -115,11 +111,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                         if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                             rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                             z = 1
+                    else:
+                        #need a global flavour
+                        rowlevel = maxpos
 
-                    print(pos)
                     poslevel = rowlevel
                     starter = rowlevel
-                    print(rowlevel)
 
                     if key not in pos:
                         pos[key]=1
@@ -150,7 +147,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                         else:
                             index = keys_dict[level].index(key)
                             row[rowlevel][index] = repr(value)
-                            break             
+                            break  
+
+                    if poslevel > maxpos:
+                        maxpos = poslevel         
                     
                 else:
                     index = keys_dict[level].index(key)
