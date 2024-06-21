@@ -107,7 +107,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
             
                 elif isinstance(value,list):                                                                           
                     pos = len(row)
-                    poslist.append(key)
+                    poslist.append(key+"-"+rowlevel)
                     
                     #figure out this condition
                     if level==0 and rowlevel==0 and len(row)<=1:
@@ -116,11 +116,15 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         print(poslist)
                         substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
                         occ_prevkey = [s for s in poslist if substring in s]
+                        substring_2 = "-"+rowlevel    
+                        occ_rowlevel = [s for s in poslist if substring_2 in s]
                         print(substring,occ_prevkey)
                         print(row)
-                        if len(occ_prevkey)==1:
+                        if len(occ_rowlevel)==1:
                             print(key, rowlevel)
                             pos = rowlevel
+                        
+
 
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
