@@ -106,15 +106,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos,maxpos)
             
                 elif isinstance(value,list):                                                       
-                    z=0
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
                     else:
-                        if rowlevel > maxpos:
-                            maxpos = rowlevel
-                        else:
-                            rowlevel = maxpos
+                        rowlevel = max(maxpos,rowlevel)
+                        maxpos = rowlevel
                         
                         poslevel = rowlevel
                         starter = rowlevel
