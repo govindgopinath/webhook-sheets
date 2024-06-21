@@ -113,10 +113,22 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)
                     else:
+                        key2 = key
                         if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                             if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                                 rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
                                 z = 1
+                                while 'char$tGPT' in key2:
+                                    key3 = key2
+                                    if len(key2.split('char$tGPT')[:-1])==1:
+                                        key2 = key2.split('char$tGPT')[0]
+                                    elif 'char$tGPT' not in key2:
+                                        key2 = "0"
+                                    else:    
+                                        key2 = 'char$tGPT'.join(key2.split('char$tGPT')[:-1])
+                                    if pos[key3] > pos[key2]:
+                                        pos[key2] = pos[key3]
+
                         else:
                             rowlevel = pos["0"]
                             key2 = key
@@ -125,7 +137,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                     key2 = key2.split('char$tGPT')[0]
                                 else:    
                                     key2 = 'char$tGPT'.join(key2.split('char$tGPT')[:-1])
-                                    pos[key2] = pos["0"]
+                                pos[key2] = pos["0"]
 
 
                         if rowlevel>(len(row)-1):
