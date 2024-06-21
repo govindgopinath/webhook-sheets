@@ -128,7 +128,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         key2 = 'char$tGPT'.join(key2.split('char$tGPT')[:-1])
                                     
                                     if key2 not in pos:
-                                        pos[key2] = rowlevel
+                                        pos[key2] = max(rowlevel,1)
                                     if y > 1:
                                         if pos[key2] < pos[key3]:
                                             pos[key2] = pos[key3]
