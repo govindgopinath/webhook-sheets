@@ -115,7 +115,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                     else:
                         print(poslist)
                         substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
-                        substring_2 = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+"-0"
+                        substring_2 = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+"-"
                         occ_prevkey = [s for s in poslist if substring in s]
                         occ_prevkey_2 = [s for s in poslist if substring_2 in s]
                         substring_3 = "-"+str(rowlevel)
