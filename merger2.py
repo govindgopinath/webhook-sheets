@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",jumper=0):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=0):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -107,12 +107,15 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",jumper=0)
             
                 elif isinstance(value,list):                                                                           
                     pos = len(row)
-
+                    poslist.append(key)
                     #figure out this condition
                     if level==0 and rowlevel==0 and len(row)<=1:
                         pos = rowlevel
-                    elif prevkey == 'char$tGPT'.join(key.split('char$tGPT')[:-1]):
-                        pos = rowlevel
+                    else:
+                        substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
+                        occ_prevkey = [s for s in poslist if substring in s]
+                        if len(occ_prevkey)==0:
+                            pos = rowlevel
 
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
