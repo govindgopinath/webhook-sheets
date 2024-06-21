@@ -143,6 +143,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                                 poslevel = starter + pos[key] 
                                 if poslevel > maxpos[0]:                   
                                     maxpos[0] = poslevel        
+                            maxpos[0] = maxpos[0]+1
                     
                 else:
                     index = keys_dict[level].index(key)
