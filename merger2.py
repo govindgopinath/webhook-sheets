@@ -114,10 +114,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                         row[rowlevel][index] = repr(value)
                     else:
                         key2 = key
+
                         if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
                             if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
                                 rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
-                                z = 1
                                 y = 1
                                 while key2 != "0":
                                     key3 = key2
@@ -130,6 +130,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                     
                                     if key2 not in pos:
                                         pos[key2] = max(rowlevel,1)
+                                    if y == 1:
+                                        if key3 not in pos:
+                                            if key2 in pos:
+                                                z = 1
                                     if y > 1:
                                         if pos[key2] < pos[key3]:
                                             pos[key2] = pos[key3]
@@ -175,8 +179,6 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         if poslevel != starter:
                                             pos[poskey] = pos[poskey] + 1
                                         elif poslevel == starter and z==1:
-                                            pos[poskey] = pos[poskey] + 1
-                                        elif poslevel == starter and key4 not in pos:
                                             pos[poskey] = pos[poskey] + 1
                                                                    
                                 poslevel = starter + pos[key]         
