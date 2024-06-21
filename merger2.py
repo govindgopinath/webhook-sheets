@@ -115,12 +115,14 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                     else:
                         print(poslist)
                         substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
+                        substring_2 = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+"-"+str(rowlevel)
                         occ_prevkey = [s for s in poslist if substring in s]
-                        substring_2 = "-"+str(rowlevel)    
-                        occ_rowlevel = [s for s in occ_prevkey if substring_2 in s]
+                        occ_prevkey_2 = [s for s in poslist if substring_2 in s]
+                        substring_3 = "-"+str(rowlevel)
+                        occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
                         print(substring,occ_prevkey)
                         print(row)
-                        if len(occ_rowlevel)==1:
+                        if len(occ_rowlevel)==1 and len(occ_prevkey_2):
                             print(key, rowlevel)
                             pos = rowlevel
                         
