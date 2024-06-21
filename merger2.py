@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, maxpos=[0]):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -103,47 +103,17 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                 key = prevkey+"char$tGPT"+key
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos,maxpos)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos)
             
                 elif isinstance(value,list):                                                       
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
-                    else:
-                        rowlevel = max(maxpos[0],rowlevel)
-                        maxpos = [rowlevel]
-                        
-                        poslevel = rowlevel
-                        starter = rowlevel
-
-                        if key not in pos:
-                            pos[key]=1 
-                        
+                    else:        
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
-                                print(1, pos)
-                                print(row)
-                                print(maxpos)
-                                fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos,maxpos)
-                                poskey = key
-                                print(2, pos)
-                                print(row)
-                                print(maxpos)
-                                while 'char$tGPT' in poskey:  
-                                    if len(poskey.split('char$tGPT')[:-1])==1:
-                                        poskey = poskey.split('char$tGPT')[0]
-                                    else:                       
-                                        poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
-                                    
-                                    if poskey in pos:
-                                        pos[poskey] = pos[poskey] + 1
-                                    else:
-                                        pos[poskey] = 1                            
-                                
-                                poslevel = starter + pos[key] 
-                                if poslevel > maxpos[0]:                   
-                                    maxpos[0] = poslevel        
-                            maxpos[0] = maxpos[0]+1
+                                fill_rows(value[j],level+1,keys_dict,row,rowlevel,key,pos)
+                                rowlevel = len(row)+1
                     
                 else:
                     index = keys_dict[level].index(key)
