@@ -438,7 +438,7 @@ async def receive_token(param: str, data: Dict):
 
         #new data cleaning
         pos = {}
-        pos["0"] = 0
+        pos["0"] = 1
         datarow = fill_rows(data,0,cleaned,[],0,"",pos)
 
         cleaned_2 = getback(cleaned.copy())
