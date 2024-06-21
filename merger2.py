@@ -116,7 +116,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         print(poslist)
                         substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
                         occ_prevkey = [s for s in poslist if substring in s]
-                        if len(occ_prevkey)==0:
+                        if len(occ_prevkey)==1:
                             pos = rowlevel
 
                     if not isinstance(value[0],dict):   
