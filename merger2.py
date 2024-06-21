@@ -107,50 +107,50 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
             
                 elif isinstance(value,list):                                                       
                     z=0
-                    if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
-                        if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
-                            rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
-                            z = 1
-                    else:
-                        #need a global flavour
-                        rowlevel = maxpos
-
-                    poslevel = rowlevel
-                    starter = rowlevel
-
-                    if key not in pos:
-                        pos[key]=1
+                    if not isinstance(value[0],dict):   
+                        index = keys_dict[level].index(key)
+                        row[rowlevel][index] = repr(value)
                     
-                    for j in range(0,len(value)):
-                        if isinstance(value[j],dict):                        
-                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
-                            poskey = key
-                            print(row)
-                            while 'char$tGPT' in poskey:  
-                                if len(poskey.split('char$tGPT')[:-1])==1:
-                                    poskey = poskey.split('char$tGPT')[0]
-                                else:    
-                                    poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
-                                
-                                print(starter,poslevel)
-
-                                if poskey in pos:
-                                    if poslevel != rowlevel:
-                                        pos[poskey] = pos[poskey] + 1
-                                    elif poslevel == rowlevel and z==1:
-                                        pos[poskey] = pos[poskey] + 1
-                                else:
-                                    pos[poskey] = 1                            
-                            
-                            poslevel = starter + pos[key]
-            
+                    else:
+                        if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
+                            if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
+                                rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
+                                z = 1
                         else:
-                            index = keys_dict[level].index(key)
-                            row[rowlevel][index] = repr(value)
-                            break  
+                            #need a global flavour
+                            rowlevel = maxpos
 
-                    if poslevel > maxpos:
-                        maxpos = poslevel         
+                        poslevel = rowlevel
+                        starter = rowlevel
+
+                        if key not in pos:
+                            pos[key]=1
+                        
+                        for j in range(0,len(value)):
+                            if isinstance(value[j],dict):                        
+                                fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
+                                poskey = key
+                                print(row)
+                                while 'char$tGPT' in poskey:  
+                                    if len(poskey.split('char$tGPT')[:-1])==1:
+                                        poskey = poskey.split('char$tGPT')[0]
+                                    else:    
+                                        poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
+                                    
+                                    print(starter,poslevel)
+
+                                    if poskey in pos:
+                                        if poslevel != rowlevel:
+                                            pos[poskey] = pos[poskey] + 1
+                                        elif poslevel == rowlevel and z==1:
+                                            pos[poskey] = pos[poskey] + 1
+                                    else:
+                                        pos[poskey] = 1                            
+                                
+                                poslevel = starter + pos[key] 
+
+                        if poslevel > maxpos:
+                            maxpos = poslevel         
                     
                 else:
                     index = keys_dict[level].index(key)
