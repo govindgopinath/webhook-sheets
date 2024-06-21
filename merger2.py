@@ -110,7 +110,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                     poslist.append(key+"-"+str(rowlevel))
                     
                     #figure out this condition
-                    if level==0 and rowlevel==0 and len(row)<=1:
+                    if rowlevel==0 and len(row)<=1:
                         pos = rowlevel
                     else:
                         print(poslist)
@@ -120,8 +120,10 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         occ_prevkey_2 = [s for s in poslist if substring_2 in s]
                         substring_3 = "-"+str(rowlevel)
                         occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
+                        
                         print(substring,occ_prevkey)
                         print(row)
+                        
                         if len(occ_rowlevel)==1 and len(occ_prevkey_2)==1:
                             print(key, rowlevel)
                             pos = rowlevel
