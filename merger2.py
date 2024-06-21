@@ -106,7 +106,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
                 elif isinstance(value,list):                                                                           
-                    inipos = rowlevel
+                    pos = rowlevel
                     if not isinstance(value[0],dict):   
                         print(rowlevel)
                         print(row)
@@ -115,10 +115,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                     else:        
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
-                                fill_rows(value[j],level+1,keys_dict,rowlevel,key)
-                                rowlevel = len(row)
-                    
-                    rowlevel = inipos
+                                fill_rows(value[j],level+1,keys_dict,pos,key)
+                                pos = len(row)
                     
                 else:
                     print(rowlevel)
