@@ -107,6 +107,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
             
                 elif isinstance(value,list):                                                       
                     if not isinstance(value[0],dict):   
+                        print(rowlevel)
+                        print(row)
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
                     else:        
