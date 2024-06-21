@@ -130,7 +130,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                             if isinstance(value[j],dict):                        
                                 print(1, pos)
                                 print(row)
-                                fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos.maxpos)
+                                fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos,maxpos)
                                 poskey = key
                                 print(2, pos)
                                 print(row)
