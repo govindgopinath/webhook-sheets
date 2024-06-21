@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, maxpos=0):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, maxpos=[0]):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -110,8 +110,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
                     else:
-                        rowlevel = max(maxpos,rowlevel)
-                        maxpos = rowlevel
+                        rowlevel = max(maxpos[0],rowlevel)
+                        maxpos = [rowlevel]
                         
                         poslevel = rowlevel
                         starter = rowlevel
@@ -142,8 +142,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                                 
                                 poslevel = starter + pos[key] 
 
-                        if poslevel > maxpos:                   
-                            maxpos = poslevel        
+                        if poslevel > maxpos[0]:                   
+                            maxpos[0] = poslevel        
                     
                 else:
                     index = keys_dict[level].index(key)
