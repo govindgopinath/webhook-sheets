@@ -114,17 +114,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                     else:
                         if rowlevel > maxpos:
                             maxpos = rowlevel
-                        
-                        rowlevel = maxpos
 
                         poslevel = rowlevel
                         starter = rowlevel
 
                         if key not in pos:
-                            pos[key]=1
-                        
-                        if poslevel > maxpos:
-                            maxpos = poslevel 
+                            pos[key]=1 
                         
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
