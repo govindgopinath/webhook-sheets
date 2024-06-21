@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},list2={}):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -97,98 +97,65 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
     if rowlevel>(len(row)-1):
         row.append(['']*len(keys_dict[0]))
 
+    #print(keys_dict, level)
+    
     if isinstance(data, dict):
         for key, value in data.items():
-            list2[key]=0
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
+                #print(key)
+                #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos,list2)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos)
             
                 elif isinstance(value,list):                                                       
-                    z = 0
-                    list2[key] = 1
-                    if not isinstance(value[0],dict): 
-                        index = keys_dict[level].index(key)
-                        row[rowlevel][index] = repr(value)
-                    else:
-                        key2 = key
-                        if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
-                            if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
-                                rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
-                                y = 1
-                                while key2 != "0":
-                                    key3 = key2
-                                    if len(key2.split('char$tGPT')[:-1])==1:
-                                        key2 = key2.split('char$tGPT')[0]
-                                    elif 'char$tGPT' not in key2:
-                                        key2 = "0"
-                                    else:    
-                                        key2 = 'char$tGPT'.join(key2.split('char$tGPT')[:-1])
-                                    
-                                    if key2 not in pos:
-                                        pos[key2] = max(rowlevel,1)
-                                    if y == 1:
-                                        if key3 not in pos:
-                                            if key2 in pos:
-                                                z = 1
-                                    if y > 1:
-                                        if pos[key2] < pos[key3]:
-                                            pos[key2] = pos[key3]
-                                    y = y + 1  
+                    z=0
+                    if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
+                        if pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]>1:
+                            rowlevel = pos['char$tGPT'.join(key.split('char$tGPT')[:-1])]
+                            z = 1
 
-                        else:
-                            rowlevel = pos["0"]
-                            key2 = key
-                            while 'char$tGPT' in key2:
-                                if len(key2.split('char$tGPT')[:-1])==1:
-                                    key2 = key2.split('char$tGPT')[0]
+                    print(pos)
+                    poslevel = rowlevel
+                    starter = rowlevel
+                    print(rowlevel)
+
+                    if key not in pos:
+                        pos[key]=1
+                    
+                    for j in range(0,len(value)):
+                        if isinstance(value[j],dict):                        
+                            fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos)
+                            poskey = key
+                            print(row)
+                            while 'char$tGPT' in poskey:  
+                                if len(poskey.split('char$tGPT')[:-1])==1:
+                                    poskey = poskey.split('char$tGPT')[0]
                                 else:    
-                                    key2 = 'char$tGPT'.join(key2.split('char$tGPT')[:-1])
-                                pos[key2] = pos["0"]
+                                    poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
+                                
+                                print(starter,poslevel)
 
-
-                        if rowlevel>(len(row)-1):
-                            row.append(['']*len(keys_dict[0]))    
-
-                        poslevel = rowlevel
-                        starter = rowlevel
-
-                        if key not in pos:
-                            pos[key]=1
-                        
-                        for j in range(0,len(value)):
-                            if isinstance(value[j],dict):                        
-                                print(pos)
-                                print(row)
-                                fill_rows(value[j],level+1,keys_dict,row,poslevel,key,pos,list2)
-                                poskey = key
-                                print(pos)
-                                print(row)
-                                while poskey != "0":
-                                    key4 = poskey
-                                    if len(poskey.split('char$tGPT')[:-1])==1:
-                                        poskey = poskey.split('char$tGPT')[0]
-                                    elif 'char$tGPT' not in poskey:
-                                        poskey = "0"
-                                    else:
-                                        poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
-
-                                    if poskey in pos:
-                                        if poslevel != starter:
-                                            pos[poskey] = pos[poskey] + 1
-                                        elif poslevel == starter and z==1:
-                                            pos[poskey] = pos[poskey] + 1
-                                                                   
-                                poslevel = starter + pos[key]         
+                                if poskey in pos:
+                                    if poslevel != rowlevel:
+                                        pos[poskey] = pos[poskey] + 1
+                                    elif poslevel == rowlevel and z==1:
+                                        pos[poskey] = pos[poskey] + 1
+                                else:
+                                    pos[poskey] = 1                            
+                            
+                            poslevel = starter + pos[key]
+            
+                        else:
+                            index = keys_dict[level].index(key)
+                            row[rowlevel][index] = repr(value)
+                            break             
                     
                 else:
-                    print(rowlevel)
                     index = keys_dict[level].index(key)
                     row[rowlevel][index] = str(value)
     else:
-        print(rowlevel)
         index = keys_dict[level].index(key)
         row[rowlevel][index] = str(value)
 
@@ -443,7 +410,6 @@ async def receive_token(param: str, data: Dict):
 
         #new data cleaning
         pos = {}
-        pos["0"] = 1
         datarow = fill_rows(data,0,cleaned,[],0,"",pos)
 
         cleaned_2 = getback(cleaned.copy())
