@@ -183,6 +183,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                     index = keys_dict[level].index(key)
                     row[rowlevel][index] = str(value)
     else:
+        print(rowlevel)
         index = keys_dict[level].index(key)
         row[rowlevel][index] = str(value)
 
