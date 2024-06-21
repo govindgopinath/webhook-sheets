@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",jumper=0):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -103,10 +103,12 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                 key = prevkey+"char$tGPT"+key
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,1)
             
                 elif isinstance(value,list):                                                                           
                     pos = rowlevel
+                    if jumper==0:
+                        pos = len(row)
                     if not isinstance(value[0],dict):   
                         print(rowlevel)
                         print(row)
@@ -115,7 +117,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
                     else:        
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
-                                fill_rows(value[j],level+1,keys_dict,row,pos,key)
+                                fill_rows(value[j],level+1,keys_dict,row,pos,key,1)
                                 pos = len(row)
                     
                 else:
