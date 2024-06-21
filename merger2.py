@@ -113,7 +113,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}):
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
                                 fill_rows(value[j],level+1,keys_dict,row,rowlevel,key,pos)
-                                rowlevel = len(row)+1
+                                rowlevel = len(row)
                     
                 else:
                     index = keys_dict[level].index(key)
