@@ -134,10 +134,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         if pos[key2] < pos[key3]:
                                             pos[key2] = pos[key3]
 
-                                    y = y + 1
-
-                                    
-                                
+                                    y = y + 1  
 
                         else:
                             rowlevel = pos["0"]
@@ -177,7 +174,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                     if poskey in pos:
                                         if poslevel != starter:
                                             pos[poskey] = pos[poskey] + 1
-                                        elif poslevel == starter and z=1:
+                                        elif poslevel == starter and z==1:
                                             pos[poskey] = pos[poskey] + 1
                                                                    
                                 poslevel = starter + pos[key]         
