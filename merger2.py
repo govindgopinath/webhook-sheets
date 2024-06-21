@@ -113,7 +113,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                     
                     else:
                         if rowlevel > maxpos:
-                            maxpos = poslevel 
+                            maxpos = rowlevel
                         
                         rowlevel = maxpos
 
