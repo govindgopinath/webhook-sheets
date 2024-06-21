@@ -97,15 +97,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
     if rowlevel>(len(row)-1):
         row.append(['']*len(keys_dict[0]))
 
-    #print(keys_dict, level)
-    
     if isinstance(data, dict):
         for key, value in data.items():
             list2[key]=0
             if prevkey!= "":
                 key = prevkey+"char$tGPT"+key
-                #print(key)
-                #print(keys_dict)
             if key in keys_dict[level]:
                 if isinstance(value,dict):
                     fill_rows(value,level+1,keys_dict,row,rowlevel,key,pos,list2)
@@ -154,7 +150,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={},li
                                         poskey = "0"
                                     else:
                                         poskey = 'char$tGPT'.join(poskey.split('char$tGPT')[:-1])
-                                    #print(starter,poslevel)
+
                                     if poskey in pos:
                                         if poslevel != starter:
                                             pos[poskey] = pos[poskey] + 1
