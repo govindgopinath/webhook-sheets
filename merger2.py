@@ -113,7 +113,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",pos={}, m
                     
                     else:
                         if 'char$tGPT'.join(key.split('char$tGPT')[:-1]) in pos:
-                            rowlevel = maxpos-1
+                            rowlevel = maxpos
                             z = 1
                         else:
                             #need a global flavour
