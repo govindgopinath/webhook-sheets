@@ -119,7 +119,8 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         else:
                             iterator = 'char$tGPT'.join(key.split('char$tGPT')[:-1])
                             l1 = 0
-                            l2 = 0    
+                            l2 = 0
+                            revlist = []    
                             while 'char$tGPT' in iterator:
                                 l1 = l1 + 1
                                 substring = iterator + 'char$tGPT'
@@ -136,9 +137,11 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
 
                                 elif len(occ_prevkey)==0:
                                     l2 = l2 + 1
+                                    revlist.append(iterator+'-'+rowlevel)
 
                                 iterator = 'char$tGPT'.join(iterator.split('char$tGPT')[:-1])
                             
+                            poslist.append(revlist)
                             if l1==l2:
                                 pos = rowlevel
 
