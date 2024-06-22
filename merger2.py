@@ -114,20 +114,38 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                         pos = rowlevel
                     else:
                         print(poslist)
-                        substring = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+'char$tGPT'
-                        substring_2 = 'char$tGPT'.join(key.split('char$tGPT')[:-1])+"-"
-                        occ_prevkey = [s for s in poslist if substring in s]
-                        occ_prevkey_2 = [s for s in poslist if substring_2 in s]
-                        substring_3 = "-"+str(rowlevel)
-                        occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
                         
-                        print(substring,occ_prevkey)
-                        print(row)
-                        
-                        if len(occ_rowlevel)==1 and len(occ_prevkey_2)==1:
-                            print(key, rowlevel)
+                        if 'char$tGPT' not in key:
                             pos = rowlevel
-                        
+                        else:
+                            iterator = 'char$tGPT'.join(key.split('char$tGPT')[:-1])
+                            l1 = 0
+                            l2 = 0    
+                            while 'char$tGPT' in substring:
+                                l1 = l1 + 1
+                                substring = iterator + 'char$tGPT'
+                                substring_2 = iterator + "-"
+                                occ_prevkey = [s for s in poslist if substring in s]
+                                occ_prevkey_2 = [s for s in poslist if substring_2 in s]
+                                substring_3 = "-"+str(rowlevel)
+                                occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
+
+                                if len(occ_rowlevel)==1 and len(occ_prevkey_2)==1:
+                                    print(key, rowlevel)
+                                    pos = rowlevel
+                                    break
+
+                                elif len(occ_prevkey)==0:
+                                    l2 = l2 + 1
+
+                                iterator = 'char$tGPT'.join(iterator.split('char$tGPT')[:-1])
+                            
+                            if l1==l2:
+                                pos = rowlevel
+
+                            print(substring,occ_prevkey)
+                            print(row)
+                            
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
