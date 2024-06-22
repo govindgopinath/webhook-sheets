@@ -89,7 +89,7 @@ def collect_keys(data, level=0, keys_dict=[[]], prevkey="", colchanges=[]):
 
     return [keys_dict,colchanges]
 
-def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[]):
+def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey=""):
     
     if row == []:
         row.append(['']*len(keys_dict[0]))
@@ -103,57 +103,17 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                 key = prevkey+"char$tGPT"+key
             if key in keys_dict[level]:
                 if isinstance(value,dict):
-                    fill_rows(value,level+1,keys_dict,row,rowlevel,key,poslist)
+                    fill_rows(value,level+1,keys_dict,row,rowlevel,key)
             
                 elif isinstance(value,list):                                                                           
                     pos = len(row)
-                    poslist.append(key+"-"+str(rowlevel))
-
-                    """#figure out this condition
-                    if rowlevel==0 and len(row)<=1 and level==0:
-                        pos = rowlevel
-                    else:
-                        print(poslist)
-                        if 'char$tGPT' not in key:
-                            pos = rowlevel
-                        else:
-                            iterator = 'char$tGPT'.join(key.split('char$tGPT')[:-1])
-                            l1 = 0
-                            l2 = 0
-                            revlist = []    
-                            while 'char$tGPT' in iterator:
-                                l1 = l1 + 1
-                                substring = iterator + 'char$tGPT'
-                                substring_2 = iterator + "-"
-                                occ_prevkey = [s for s in poslist if substring in s]
-                                occ_prevkey_2 = [s for s in poslist if substring_2 in s]
-                                substring_3 = "-"+str(rowlevel)
-                                occ_rowlevel = [s for s in occ_prevkey if substring_3 in s]
-
-                                if len(occ_rowlevel)==1 and len(occ_prevkey_2)==1:
-                                    print(key, rowlevel)
-                                    pos = rowlevel
-                                    break
-
-                                elif len(occ_prevkey)==0:
-                                    l2 = l2 + 1
-                                    revlist.append(iterator+'-'+rowlevel)
-
-                                iterator = 'char$tGPT'.join(iterator.split('char$tGPT')[:-1])
-                            
-                            poslist.append(revlist)
-                            if l1==l2:
-                                pos = rowlevel
-
-                            print(row)"""
-                            
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
                     else:        
                         for j in range(0,len(value)):
                             if isinstance(value[j],dict):                        
-                                fill_rows(value[j],level+1,keys_dict,row,pos,key,poslist)
+                                fill_rows(value[j],level+1,keys_dict,row,pos,key)
                                 pos = len(row)
                     
                 else:
@@ -413,7 +373,7 @@ async def receive_token(param: str, data: Dict):
         #print(cleaned)
 
         #new data cleaning
-        datarow = fill_rows(data,0,cleaned,[],0,"",[])
+        datarow = fill_rows(data,0,cleaned,[],0,"")
 
         cleaned_2 = getback(cleaned.copy())
         
