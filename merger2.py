@@ -110,7 +110,7 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                     poslist.append(key+"-"+str(rowlevel))
                     
                     #figure out this condition
-                    if rowlevel==0 and len(row)<=1:
+                    if rowlevel==0 and len(row)<=1 and level==0:
                         pos = rowlevel
                     else:
                         print(poslist)
@@ -128,7 +128,6 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                             print(key, rowlevel)
                             pos = rowlevel
                         
-
                     if not isinstance(value[0],dict):   
                         index = keys_dict[level].index(key)
                         row[rowlevel][index] = repr(value)  
