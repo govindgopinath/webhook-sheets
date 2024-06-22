@@ -108,20 +108,19 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                 elif isinstance(value,list):                                                                           
                     pos = len(row)
                     poslist.append(key+"-"+str(rowlevel))
-                    
+
                     #figure out this condition
                     if rowlevel==0 and len(row)<=1 and level==0:
                         pos = rowlevel
                     else:
                         print(poslist)
-                        
                         if 'char$tGPT' not in key:
                             pos = rowlevel
                         else:
                             iterator = 'char$tGPT'.join(key.split('char$tGPT')[:-1])
                             l1 = 0
                             l2 = 0    
-                            while 'char$tGPT' in substring:
+                            while 'char$tGPT' in iterator:
                                 l1 = l1 + 1
                                 substring = iterator + 'char$tGPT'
                                 substring_2 = iterator + "-"
