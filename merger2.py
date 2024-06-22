@@ -142,7 +142,6 @@ def fill_rows(data, level=0, keys_dict=[],row=[],rowlevel=0,prevkey="",poslist=[
                             if l1==l2:
                                 pos = rowlevel
 
-                            print(substring,occ_prevkey)
                             print(row)
                             
                     if not isinstance(value[0],dict):   
